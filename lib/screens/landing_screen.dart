@@ -2,7 +2,16 @@ import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatelessWidget {
-  const LandingScreen({Key? key}) : super(key: key);
+
+  final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    onPrimary: Colors.black87,
+    primary: Colors.pink[300],
+    minimumSize: Size(88, 36),
+    padding: EdgeInsets.symmetric(horizontal: 16),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2)),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +64,18 @@ class LandingScreen extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.blue,
-                    ),
+                  ElevatedButton(
+                    style: raisedButtonStyle,
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed(CreateDietPlanScreen.routeName);
                     },
-                    child: Text('TextButton'),
+                    child: Text(
+                      'Create Diet Plan',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
                   )
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,

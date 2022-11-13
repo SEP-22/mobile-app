@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_application_1/services/api_service.dart' as api_service;
 
 class CreateDietPlanScreen extends StatefulWidget {
   static const routeName = "/addDietPlan";
@@ -8,12 +12,60 @@ class CreateDietPlanScreen extends StatefulWidget {
 }
 
 class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
-  String? _selectedMedium;
+  String? _selectedGender;
   String? _selectedDailyActivityLevel;
   String? _selectedDietIntention;
   bool diabitics = false;
   bool bloodPressure = false;
   bool cholestrol = false;
+  DateTime? _selectedDate;
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
+  }
+
+  Future<void> submitData() async {
+    var response =
+        await api_service.fetchPost("http://10.0.2.2:4000/dietPlan/quiz", {
+      "user_Id": "63368984ba7e4ea7b42b792b",
+      "dob":_selectedDate!.toIso8601String(),
+      "gender": _selectedGender!.toLowerCase(),
+      "activity":
+          _selectedDailyActivityLevel!.toLowerCase().replaceAll(" ", ""),
+      "intention": _selectedDietIntention!.toLowerCase().split(" ")[0],
+      "height": heightController.text,
+      "weight": weightController.text,
+      "diabetics": diabitics,
+      "cholesterol": cholestrol,
+      "bloodpressure": bloodPressure,
+    });
+    var data = json.decode(response.body);
+    print(data);
+  }
+
+  final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    onPrimary: Colors.black87,
+    primary: Colors.pink[300],
+    minimumSize: Size(88, 36),
+    padding: EdgeInsets.symmetric(horizontal: 16),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2)),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,20 +117,25 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        DropdownButton<String>(
-                          value: _selectedMedium,
-                          hint: const Text("Gender"),
-                          items: <String>['Male', 'Female'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: new Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _selectedMedium = newValue!;
-                            });
-                          },
+                        Container(
+                          height: 70,
+                          child: Column(
+                            children: [
+                              Text(
+                                _selectedDate == null
+                                    ? "No Date Choosen!"
+                                    : "${DateFormat.yMd().format(_selectedDate!)}",
+                              ),
+                              ElevatedButton(
+                                onPressed: _presentDatePicker,
+                                child: Text(
+                                  "Choose Date",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                style: raisedButtonStyle,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -114,7 +171,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           height: 10,
                         ),
                         DropdownButton<String>(
-                          value: _selectedMedium,
+                          value: _selectedGender,
                           hint: const Text("Gender"),
                           items: <String>['Male', 'Female'].map((String value) {
                             return DropdownMenuItem<String>(
@@ -124,9 +181,85 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           }).toList(),
                           onChanged: (newValue) {
                             setState(() {
-                              _selectedMedium = newValue!;
+                              _selectedGender = newValue!;
                             });
                           },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 100),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Height (cm)",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          decoration: InputDecoration(hintText: "Height"),
+                          controller: heightController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 100),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Weight (kg)",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          decoration: InputDecoration(hintText: "Weight"),
+                          controller: weightController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
                         ),
                       ],
                     ),
@@ -348,22 +481,18 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                     top: 20,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 60
-                    ),
-                    child:
-                     TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 60),
+                      child: ElevatedButton(
+                        style: raisedButtonStyle,
+                        onPressed: submitData,
+                        child: Text(
+                          'Select Foods',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(CreateDietPlanScreen.routeName);
-                        },
-                        child: Text('TextButton'),
-                      )
-                  ),
+                      )),
                 ),
               ),
               SizedBox(

@@ -3,11 +3,10 @@ import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       
-      home: const LandingScreen(),
+      home:  LandingScreen(),
       routes: {
         CreateDietPlanScreen.routeName:(context) => CreateDietPlanScreen()
       },
