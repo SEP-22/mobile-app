@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/food_item.dart';
 
 class LandingScreen extends StatelessWidget {
 
@@ -70,12 +71,7 @@ class LandingScreen extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed(CreateDietPlanScreen.routeName);
                     },
-                    child: Text(
-                      'Create Diet Plan',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
+                    child: FoodItem()
                   )
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
