@@ -4,11 +4,19 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class FoodItem extends StatefulWidget {
 
+  late String title;
+  late String img;
+  FoodItem(this.title,this.img);
+
   @override
   State<FoodItem> createState() => _FoodItemState();
+
+  
 }
 
 class _FoodItemState extends State<FoodItem> {
+
+  
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -19,7 +27,7 @@ class _FoodItemState extends State<FoodItem> {
           child: Hero(
             tag: "Title",
             child: Image.network(
-              "https://nix-tag-images.s3.amazonaws.com/752_highres.jpg",
+              widget.img,
               fit: BoxFit.cover,
             ),
           ),
@@ -27,11 +35,11 @@ class _FoodItemState extends State<FoodItem> {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           title: Text(
-            "Title 2",
+            widget.title,
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.check_box),
             color: Theme.of(context).accentColor,
             onPressed: () {},
           ),

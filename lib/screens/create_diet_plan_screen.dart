@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 
@@ -42,7 +43,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     var response =
         await api_service.fetchPost("http://10.0.2.2:4000/dietPlan/quiz", {
       "user_Id": "63368984ba7e4ea7b42b792b",
-      "dob":_selectedDate!.toIso8601String(),
+      "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
       "activity":
           _selectedDailyActivityLevel!.toLowerCase().replaceAll(" ", ""),
@@ -485,7 +486,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           vertical: 20, horizontal: 60),
                       child: ElevatedButton(
                         style: raisedButtonStyle,
-                        onPressed: submitData,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(FoodScreen.routeName);
+                        },
                         child: Text(
                           'Select Foods',
                           style: TextStyle(

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 
 class LandingScreen extends StatelessWidget {
-
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     onPrimary: Colors.black87,
     primary: Colors.pink[300],
-    minimumSize: Size(88, 36),
-    padding: EdgeInsets.symmetric(horizontal: 16),
+    minimumSize: Size(60, 20),
+    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
@@ -57,8 +56,8 @@ class LandingScreen extends StatelessWidget {
                     ),
                     child: Image.network(
                       "https://img.freepik.com/premium-vector/nutritionist-makes-diet-plan-mobile-application-online-nutrition-consultation-concept-cartoon-vector-illustration_319667-323.jpg",
-                      height: 250,
-                      width: 250,
+                      height: 200,
+                      width: 200,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -71,7 +70,12 @@ class LandingScreen extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed(CreateDietPlanScreen.routeName);
                     },
-                    child: FoodItem()
+                    child: Text(
+                      'Create Your Diet Plan',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
                   )
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,

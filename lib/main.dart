@@ -1,4 +1,5 @@
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
+import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       
       home:  LandingScreen(),
       routes: {
-        CreateDietPlanScreen.routeName:(context) => CreateDietPlanScreen()
+        CreateDietPlanScreen.routeName:(context) => CreateDietPlanScreen(),
+        FoodScreen.routeName:(context) => FoodScreen(),
       },
     );
   }
