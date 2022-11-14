@@ -2,6 +2,7 @@ import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/stats_screen.dart';
 
 void main() {
   runApp( MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       
-      home:  LandingScreen(),
+      home:  const StatsScreen(),
       routes: {
         CreateDietPlanScreen.routeName:(context) => CreateDietPlanScreen(),
         FoodScreen.routeName:(context) => FoodScreen(),
