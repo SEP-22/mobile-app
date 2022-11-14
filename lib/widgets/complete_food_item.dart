@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class FoodItem extends StatefulWidget {
-
+class CompleteFoodItem extends StatefulWidget {
   late String title;
   late String img;
-  FoodItem(this.title,this.img, info);
+  late String amount;
+  late String calorie;
+  CompleteFoodItem(this.title, this.img, this.amount, this.calorie);
 
   @override
-  State<FoodItem> createState() => _FoodItemState();
-
-  
+  State<CompleteFoodItem> createState() => _CompleteFoodItemState();
 }
 
-class _FoodItemState extends State<FoodItem> {
-
-  
+class _CompleteFoodItemState extends State<CompleteFoodItem> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -36,6 +33,10 @@ class _FoodItemState extends State<FoodItem> {
           backgroundColor: Colors.black87,
           title: Text(
             widget.title,
+            textAlign: TextAlign.center,
+          ),
+          subtitle: Text(
+            widget.amount,
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(

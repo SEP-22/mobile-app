@@ -7,7 +7,7 @@ class LandingScreen extends StatelessWidget {
     onPrimary: Colors.black87,
     primary: Colors.pink[300],
     minimumSize: Size(60, 20),
-    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
+    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),

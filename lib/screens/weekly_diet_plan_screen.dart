@@ -55,7 +55,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(10),
                           width: 80,
                           height: 45,
                           decoration: BoxDecoration(
@@ -98,7 +98,13 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(weekdays[current]),
+                Row(
+                  children: [
+                    Text(weekdays[current]),
+                    Text(weekdays[current]),
+                    Text(weekdays[current]),
+                  ],
+                )
               ],
             ),
           ),
