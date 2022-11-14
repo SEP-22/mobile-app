@@ -6,7 +6,7 @@ class FoodItem extends StatefulWidget {
 
   late String title;
   late String img;
-  FoodItem(this.title,this.img);
+  FoodItem(this.title,this.img, info);
 
   @override
   State<FoodItem> createState() => _FoodItemState();

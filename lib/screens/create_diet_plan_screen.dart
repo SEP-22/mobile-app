@@ -1,9 +1,17 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
+
+class SelectFoodArguments {
+  SelectFoodArguments({required this.addFood, required this.selectedFood});
+
+  final Function addFood;
+  final List<String> selectedFood;
+}
 
 class CreateDietPlanScreen extends StatefulWidget {
   static const routeName = "/addDietPlan";
@@ -23,6 +31,13 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   final heightController = TextEditingController();
   final weightController = TextEditingController();
 
+  List<String> seletedFood = [];
+
+  void addFood(String id) {
+    seletedFood.add(id);
+    print(seletedFood);
+  }
+
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -39,9 +54,25 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     });
   }
 
+  Future<void> submitPreferedFood() async {
+    var response = await api_service.fetchPost(
+        "http://localhost:4000/user/preferedfoods",
+        {"user_Id": "63368984ba7e4ea7b42b792b", "foods": seletedFood});
+    var data = json.decode(response.body);
+    // print(data);
+  }
+
+  Future<void> generateDietPlan(String id) async {
+    var response = await api_service.fetchPost(
+        "http://localhost:4000/dietPlan/generatedietplan",
+        {"dietPlan_Id": id});
+    var data = json.decode(response.body);
+    print(data["message"]);
+  }
+
   Future<void> submitData() async {
     var response =
-        await api_service.fetchPost("http://10.0.2.2:4000/dietPlan/quiz", {
+        await api_service.fetchPost("http://localhost:4000/dietPlan/quiz", {
       "user_Id": "63368984ba7e4ea7b42b792b",
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
@@ -54,8 +85,13 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
       "cholesterol": cholestrol,
       "bloodpressure": bloodPressure,
     });
+
     var data = json.decode(response.body);
-    print(data);
+
+    submitPreferedFood();
+    generateDietPlan(data["_id"]);
+
+    // print(data);
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -101,7 +137,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                   color: Colors.white,
                   margin: const EdgeInsets.only(
                     top: 20,
-                  ),
+
+),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
@@ -207,7 +244,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 100),
                     child: Column(
-                      children: [
+
+children: [
                         const Text(
                           "Height (cm)",
                           style: TextStyle(
@@ -312,7 +350,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           }).toList(),
                           onChanged: (newValue) {
                             setState(() {
-                              _selectedDailyActivityLevel = newValue!;
+
+_selectedDailyActivityLevel = newValue!;
                             });
                           },
                         ),
@@ -418,7 +457,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                                 setState(() {
                                   this.diabitics = diabitics!;
                                 });
-                              },
+
+},
                             ), //Checkbox
                           ], //<Widget>[]
                         ),
@@ -487,7 +527,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
-                          Navigator.of(context).pushNamed(FoodScreen.routeName);
+                          Navigator.of(context).pushNamed(FoodScreen.routeName,
+                              arguments: SelectFoodArguments(
+                                  addFood: addFood, selectedFood: seletedFood));
                         },
                         child: Text(
                           'Select Foods',
@@ -496,6 +538,19 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           ),
                         ),
                       )),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: submitData,
+                child: Text(
+                  'Continue',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
               ),
               SizedBox(
