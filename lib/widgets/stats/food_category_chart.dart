@@ -43,21 +43,6 @@ class _FoodCategoryChartState extends State<FoodCategoryChart> {
     });
   }
 
-  // final data = [
-  //   {
-  //     'meal': "Breakfast",
-  //     'calpercent': 30,
-  //   },
-  //   {
-  //     'meal': "Lunch",
-  //     'calpercent': 40,
-  //   },
-  //   {
-  //     'meal': "Dinner",
-  //     'calpercent': 30,
-  //   },
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
