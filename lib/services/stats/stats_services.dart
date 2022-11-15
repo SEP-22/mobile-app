@@ -4,7 +4,7 @@ import '../../const.dart';
 
 Future<Object> getMostOccuringFoods() async {
   var response = await api_service
-      .fetchPost("http://192.168.8.104:4000/stats/maxcountfoodsinDP", {
+      .fetchPost("${uri}stats/maxcountfoodsinDP", {
     "user_Id": "6360cf9f0ebc552ba5863f87",
   });
 
@@ -42,7 +42,7 @@ Future<Object> getMostOccuringFoods() async {
 
 Future<Object> getFoodCategoryPercentage() async {
   var response = await api_service
-      .fetchPost("http://192.168.8.104:4000/stats/calorypercentagebycateory", {
+      .fetchPost("${uri}stats/calorypercentagebycateory", {
     "user_Id": "6360cf9f0ebc552ba5863f87",
   });
 
@@ -64,7 +64,7 @@ Future<Object> getFoodCategoryPercentage() async {
 Future<Object> haveActiveDietPlan() async {
   
   var response = await api_service
-      .fetchPost("http://192.168.8.104:4000/user/activeplan", {
+      .fetchPost("${uri}user/activeplan", {
     "user_Id": "6360cf9f0ebc552ba5863f87",
   });
 

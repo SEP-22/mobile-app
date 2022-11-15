@@ -1,13 +1,14 @@
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'dart:convert';
 import 'Food.dart';
+import '../../const.dart';
 
 Future<Object> getFoodbyCategory() async {
   var response1 =
-      await api_service.fetchGet("http://192.168.8.104:4000/food/allfoods");
+      await api_service.fetchGet("${uri}food/allfoods");
 
   var response2 = await api_service
-      .fetchPost("http://192.168.8.104:4000/user/getpreferedfoods", {
+      .fetchPost("${uri}user/getpreferedfoods", {
     "user_Id": "6360cf9f0ebc552ba5863f87",
   });
 
@@ -90,10 +91,10 @@ Future<Object> getFoodbyCategory() async {
 
 Future<Object> getAllFoods() async {
   var response1 =
-      await api_service.fetchGet("http://192.168.8.104:4000/food/allfoods");
+      await api_service.fetchGet("${uri}food/allfoods");
 
   var response2 = await api_service
-      .fetchPost("http://192.168.8.104:4000/user/getpreferedfoods", {
+      .fetchPost("${uri}user/getpreferedfoods", {
     "user_Id": "6360cf9f0ebc552ba5863f87",
   });
 
