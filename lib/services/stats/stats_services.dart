@@ -70,7 +70,7 @@ Future<Object> haveActiveDietPlan() async {
 
   if (response.statusCode == 200) {
     var d = json.decode(response.body)['active'];
-    print(d);
+
     return d;
   } else {
     print(response);

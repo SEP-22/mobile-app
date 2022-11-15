@@ -16,13 +16,6 @@ Future<Object> getFoodbyCategory() async {
     var d = json.decode(response1.body);
     var preffered = json.decode(response2.body)["preferedFoods"];
 
-    print(d);
-
-    for (var key in d[0].keys) {
-      print(key);
-      print(d[0][key].runtimeType);
-    }
-
     List fd = [];
     for (var element in d) {
       fd.add(Food(
