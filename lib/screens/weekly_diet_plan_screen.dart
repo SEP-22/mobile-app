@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
@@ -24,14 +25,62 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     "Saturday",
     "Sunday",
   ];
-  int current = 0;
+  int current = 0; //important, don't del
+
+  String message = "";
+  Map data = {};
+  bool loading = true;
+
+  void getData() async {
+    var temp_dietPlanDetails = new Map();
+    var response = await getDietPlanById();
+    if (response is String) {
+      setState(() {
+        message = response;
+      });
+    }
+    if (response is Map) {
+      setState(() {
+        data = response;
+      });
+    }
+
+    setState(() {
+      loading = false;
+    });
+    print("here");
+    print(data);
+  }
+
   List<Widget> formattedFoods = [
-    CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-    CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
-    CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+    CompleteFoodItem(
+        "Egg",
+        "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+        "100 g",
+        "120 cal"),
+    CompleteFoodItem(
+        "Turnip",
+        "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+        "100 g",
+        "120 cal"),
+    CompleteFoodItem(
+        "Cauliflower",
+        "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000",
+        "100 g",
+        "120 cal")
   ];
-  List<Widget> formattedFoods1 = [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-    CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")];
+  List<Widget> formattedFoods1 = [
+    CompleteFoodItem(
+        "Egg",
+        "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+        "100 g",
+        "120 cal"),
+    CompleteFoodItem(
+        "Turnip",
+        "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+        "100 g",
+        "120 cal")
+  ];
 
   // List weekFoods = [[CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
   // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
@@ -44,39 +93,122 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
 
   List weekFoods = [
     [
-      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
-      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Cauliflower",
+          "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000",
+          "100 g",
+          "120 cal")
     ],
-    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
     [
-      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
-      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal")
     ],
-    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
     [
-      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
-      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Cauliflower",
+          "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000",
+          "100 g",
+          "120 cal")
     ],
-    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
     [
-      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
-      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
-      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal")
+    ],
+    [
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Cauliflower",
+          "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000",
+          "100 g",
+          "120 cal")
+    ],
+    [
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal")
+    ],
+    [
+      CompleteFoodItem(
+          "Egg",
+          "https://img2.10bestmedia.com/WebStories/19945/40689.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Turnip",
+          "https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg",
+          "100 g",
+          "120 cal"),
+      CompleteFoodItem(
+          "Cauliflower",
+          "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000",
+          "100 g",
+          "120 cal")
     ]
   ];
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: Text("My Diet Plan"),
+        title: Text(data['name']),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
@@ -142,40 +274,52 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                   })),
             ),
             Container(
-              child: Column(children: [
-                MealNameContainer("BREAKFAST"),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  height: 200,
-                  child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: weekFoods[current]),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                MealNameContainer("LUNCH"),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: weekFoods[current],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                MealNameContainer("DINNER"),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: weekFoods[current],
-                  ),
-                ),
-              ]),
+              child: data.isNotEmpty
+                  ? Column(children: [
+                      MealNameContainer("BREAKFAST"),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        height: 200,
+                        child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: data[current][0]),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      MealNameContainer("LUNCH"),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        height: 200,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: data[current][1],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      MealNameContainer("DINNER"),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        height: 200,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: data[current][2],
+                        ),
+                      ),
+                    ])
+                  : Center(
+                      child: Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 2,
+                        wordSpacing: 10,
+                      ),
+                    )),
             ),
           ]),
         ),
