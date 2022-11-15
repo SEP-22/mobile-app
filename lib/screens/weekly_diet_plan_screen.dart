@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/widgets/complete_food_item.dart';
+import 'package:flutter_application_1/widgets/food_item.dart';
+import 'package:flutter_application_1/widgets/mealButton.dart';
 
 class WeeklyDietPlan extends StatefulWidget {
   const WeeklyDietPlan({super.key});
@@ -22,6 +25,21 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     "Sunday",
   ];
   int current = 0;
+  List<Widget> formattedFoods = [
+    CompleteFoodItem(),
+    CompleteFoodItem(),
+    CompleteFoodItem()
+  ];
+  List<Widget> formattedFoods1 = [CompleteFoodItem(), CompleteFoodItem()];
+  List weekFoods = [
+    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem()],
+    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()]
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,83 +50,105 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        margin: const EdgeInsets.all(5),
-        child: Column(children: [
-          SizedBox(
-            width: double.infinity,
-            height: 100,
-            child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: weekdays.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: ((context, index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            current = index;
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.all(10),
-                          width: 80,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: current == index
-                                ? Colors.white70
-                                : Colors.white54,
-                            borderRadius: current == index
-                                ? BorderRadius.circular(15)
-                                : BorderRadius.circular(10),
-                            border: current == index
-                                ? Border.all(color: Colors.pinkAccent, width: 2)
-                                : null,
-                          ),
-                          child: Center(
-                            child: Text(
-                              weekdays[index],
+      body: SingleChildScrollView(
+        child: Container(
+          //width: double.infinity,
+          //height: double.infinity,
+          margin: const EdgeInsets.all(5),
+          child: Column(children: [
+            SizedBox(
+              width: double.infinity,
+              height: 100,
+              child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: weekdays.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: ((context, index) {
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              current = index;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.all(10),
+                            width: (MediaQuery.of(context).size.width - 70) / 3,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: current == index
+                                  ? Colors.white70
+                                  : Colors.white54,
+                              borderRadius: current == index
+                                  ? BorderRadius.circular(15)
+                                  : BorderRadius.circular(10),
+                              border: current == index
+                                  ? Border.all(
+                                      color: Colors.pinkAccent, width: 2)
+                                  : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                weekdays[index],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Visibility(
-                        visible: current == index,
-                        child: Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            color: Colors.pinkAccent,
-                            shape: BoxShape.circle,
+                        Visibility(
+                          visible: current == index,
+                          child: Container(
+                            width: 5,
+                            height: 5,
+                            decoration: const BoxDecoration(
+                              color: Colors.pinkAccent,
+                              shape: BoxShape.circle,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                })),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: 450,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Text(weekdays[current]),
-                    Text(weekdays[current]),
-                    Text(weekdays[current]),
-                  ],
-                )
-              ],
+                      ],
+                    );
+                  })),
             ),
-          ),
-        ]),
+            Container(
+              child: Column(children: [
+                MealNameContainer("BREAKFAST"),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  height: 200,
+                  child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: weekFoods[current]),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                MealNameContainer("LUNCH"),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  height: 200,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: weekFoods[current],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                MealNameContainer("DINNER"),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  height: 200,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: weekFoods[current],
+                  ),
+                ),
+              ]),
+            ),
+          ]),
+        ),
       ),
     );
   }

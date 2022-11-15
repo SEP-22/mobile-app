@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import 'package:flutter_application_1/widgets/food_item.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen({super.key});
@@ -17,6 +18,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   String? valueChosen;
   List currentShoppingList = [];
   var slMap = new Map();
+  //food template
   //List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
 
   List<Food> foods = [
@@ -38,6 +40,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   Future<void> getShoppingList() async {
     List<String> temp_shoppingListNames = [];
     var temp_map = new Map();
+    //food template data
 
     var response = await api_service.fetchGet(
         "http://192.168.1.9:4000/shoppingList/getShoppingListsFromUserId/6360cf9f0ebc552ba5863f87");
@@ -45,11 +48,10 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     var data = json.decode(response.body);
     for (var shoppingList in data) {
       temp_shoppingListNames.add(shoppingList[0]);
-      temp_map[shoppingList[0]] = [shoppingList[2],shoppingList[1]];
+      temp_map[shoppingList[0]] = [shoppingList[2], shoppingList[1]];
     }
     print(temp_shoppingListNames);
     print(temp_map);
-
 
     setState(() {
       shoppingListNames = temp_shoppingListNames;
@@ -144,8 +146,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               ),
             ),
             Column(
-              children: currentShoppingList.map((e) => foodTemplate(Food(e[0], '${e[1]}', "200",
-                  e[3]))).toList(),
+              children: currentShoppingList
+                  // .map((e) => FoodItem(e[0], e[3], e[2]))
+                  // .toList(),
+                  .map((e) => foodTemplate(Food(e[0], '${e[1]}', "200", e[3])))
+                  .toList(),
             ),
           ],
           //children: foods.map((e) => foodTemplate(e)).toList(),

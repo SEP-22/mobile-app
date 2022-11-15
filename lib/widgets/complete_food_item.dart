@@ -3,11 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class CompleteFoodItem extends StatefulWidget {
-  late String title;
-  late String img;
-  late String amount;
-  late String calorie;
-  CompleteFoodItem(this.title, this.img, this.amount, this.calorie);
+  CompleteFoodItem();
 
   @override
   State<CompleteFoodItem> createState() => _CompleteFoodItemState();
@@ -16,34 +12,49 @@ class CompleteFoodItem extends StatefulWidget {
 class _CompleteFoodItemState extends State<CompleteFoodItem> {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        child: GestureDetector(
-          onTap: () {},
-          child: Hero(
-            tag: "Title",
-            child: Image.network(
-              widget.img,
-              fit: BoxFit.cover,
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: Container(
+        width: 150,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 3,
+                  blurRadius: 5)
+            ],
+            color: Colors.white),
+        child: Column(
+          children: [
+            Hero(
+              tag: "tag",
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),
+                        fit: BoxFit.contain)),
+              ),
             ),
-          ),
-        ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black87,
-          title: Text(
-            widget.title,
-            textAlign: TextAlign.center,
-          ),
-          subtitle: Text(
-            widget.amount,
-            textAlign: TextAlign.center,
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.check_box),
-            color: Theme.of(context).accentColor,
-            onPressed: () {},
-          ),
+            Text(
+              "Egg",
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Varela', fontSize: 15),
+            ),
+            Text(
+              "190 cal",
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Varela', fontSize: 15),
+            ),
+            Text(
+              "Consume 50 g",
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Varela', fontSize: 15),
+            )
+          ],
         ),
       ),
     );
