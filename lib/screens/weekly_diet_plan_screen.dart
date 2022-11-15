@@ -63,7 +63,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: Text(data['name']),
+        title: data.isNotEmpty ? Text(data['name']) : Text("Loading..."),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
