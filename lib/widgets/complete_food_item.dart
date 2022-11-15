@@ -3,7 +3,18 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class CompleteFoodItem extends StatefulWidget {
-  CompleteFoodItem();
+  late String img;
+  late String name;
+  late String amount;
+  late String calorie;
+
+
+  CompleteFoodItem(String name,String img,String amount,String calorie){
+    this.name = name;
+    this.img = img;
+    this.amount = amount;
+    this.calorie = calorie;
+  }
 
   @override
   State<CompleteFoodItem> createState() => _CompleteFoodItemState();
@@ -34,23 +45,22 @@ class _CompleteFoodItemState extends State<CompleteFoodItem> {
                 width: 120,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),
+                        image: NetworkImage(widget.img),
                         fit: BoxFit.contain)),
               ),
             ),
             Text(
-              "Egg",
+              widget.name,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             ),
             Text(
-              "190 cal",
+              widget.calorie,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             ),
             Text(
-              "Consume 50 g",
+              widget.amount,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             )

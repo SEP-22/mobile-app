@@ -26,19 +26,49 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
   ];
   int current = 0;
   List<Widget> formattedFoods = [
-    CompleteFoodItem(),
-    CompleteFoodItem(),
-    CompleteFoodItem()
+    CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+    CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
+    CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
   ];
-  List<Widget> formattedFoods1 = [CompleteFoodItem(), CompleteFoodItem()];
+  List<Widget> formattedFoods1 = [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+    CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")];
+
+  // List weekFoods = [[CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")],
+  // [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg"),CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg")]];
+  //
+
   List weekFoods = [
-    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem()],
-    [CompleteFoodItem(), CompleteFoodItem(), CompleteFoodItem()]
+    [
+      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
+      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+    ],
+    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
+    [
+      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
+      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+    ],
+    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
+    [
+      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
+      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+    ],
+    [CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal")],
+    [
+      CompleteFoodItem("Egg","https://img2.10bestmedia.com/WebStories/19945/40689.jpg","100 g","120 cal"),
+      CompleteFoodItem("Turnip","https://thumbs.dreamstime.com/b/fresh-whole-purple-radish-white-background-copy-space-organic-food-fresh-whole-purple-turnip-white-background-126461535.jpg","100 g","120 cal"),
+      CompleteFoodItem("Cauliflower","https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000","100 g","120 cal")
+    ]
   ];
 
   @override
