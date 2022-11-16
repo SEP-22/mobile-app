@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'package:flutter_application_1/widgets/stats/food_category_chart.dart';
 import 'package:flutter_application_1/widgets/stats/meals_chart.dart';
 import 'package:flutter_application_1/widgets/stats/most_prefered_foods.dart';
@@ -55,6 +56,7 @@ class _StatsScreenState extends State<StatsScreen> {
         title: const Text("More about your Diet Plan"),
         backgroundColor: Colors.green[500],
       ),
+      drawer: const NavDrawer(),
       body: active
           ? Container(
               width: MediaQuery.of(context).size.width,

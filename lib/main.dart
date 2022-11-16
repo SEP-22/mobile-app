@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/reminders_page.dart';
@@ -21,11 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Eat Smart',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ReminderScreen(),
+      home: const HomeScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         FoodScreen.routeName: (context) => FoodScreen(),

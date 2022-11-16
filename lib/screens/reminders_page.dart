@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import '../services/reminders/notification_service.dart';
@@ -281,6 +282,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         title: const Text("Reminders"),
         backgroundColor: Colors.green[500],
       ),
+      drawer: const NavDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/foodlist/food_list_button.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import '../services/foodlist/foodlist_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -55,6 +56,7 @@ class _FoodListScreenState extends State<FoodListScreen> {
         title: const Text("Foods in EatSmart"),
         backgroundColor: Colors.green[500],
       ),
+      drawer: const NavDrawer(),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
