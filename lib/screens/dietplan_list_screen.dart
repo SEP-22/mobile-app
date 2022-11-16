@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/services/dietPlan/dietplan_list_services.dart';
 import 'package:flutter_application_1/widgets/diet_list_button.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 
 class DietPlanListScreen extends StatefulWidget {
   const DietPlanListScreen({super.key});
@@ -61,6 +62,7 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
+      drawer: const NavDrawer(),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
