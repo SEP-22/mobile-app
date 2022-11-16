@@ -1,4 +1,5 @@
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
+import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/stats_screen.dart';
 import 'package:flutter_application_1/screens/weekly_diet_plan_screen.dart';
 import 'package:flutter_application_1/widgets/foodlist/food_list.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -25,13 +25,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ReminderScreen(),
+      home: const DietPlanListScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         FoodScreen.routeName: (context) => FoodScreen(),
         FoodList.routeName: (context) => FoodList(),
+        WeeklyDietPlan.routeName: (context) => WeeklyDietPlan(),
       },
     );
   }
 }
-
