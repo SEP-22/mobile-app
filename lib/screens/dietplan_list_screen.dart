@@ -12,11 +12,14 @@ class DietPlanListScreen extends StatefulWidget {
 }
 
 class _DietPlanListScreenState extends State<DietPlanListScreen> {
-  List<String> dietList = [
-    "Diet Plan 1111111111111",
-    "Diet Plan 2",
-    "Mom's Diet Plan"
-  ];
+  List<String> dietList = ["1", "2", "3"];
+  Map dietMap = {
+    '1': ["Granpa's List", true],
+    '2': ["Mom's list", false],
+    '3': ["My list", false],
+    '4': ["My second list", false],
+    '5': ["Temp list", false]
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,8 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
               child: Column(
                 children: dietList.map((String value) {
                   return DietListButton(
-                    dietPlanName: value,
+                    dietPlanName: dietMap[value][0],
+                    state: dietMap[value][1],
                   );
                 }).toList(),
               ),
