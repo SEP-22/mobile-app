@@ -74,6 +74,7 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
                           return DietListButton(
                             dietPlanName: data[value][0],
                             state: data[value][1],
+                            dietPlanId: value,
                           );
                         }).toList()
                       : [
