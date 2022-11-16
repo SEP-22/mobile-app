@@ -48,7 +48,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     setState(() {
       loading = false;
     });
-    print("here");
+    //print("here");
     print(data);
   }
 
