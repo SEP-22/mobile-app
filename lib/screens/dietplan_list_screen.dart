@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/services/dietPlan/dietplan_list_services.dart';
 import 'package:flutter_application_1/widgets/diet_list_button.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
 
@@ -21,6 +22,36 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
     '5': ["Temp list", false]
   };
 
+  String message = "Loading...";
+  Map data = {};
+  bool loading = true;
+  List<String> dietIdList = [];
+
+  void getData() async {
+    var response = await getAllPlanNamesAndStateByUserId();
+    if (response is String) {
+      setState(() {
+        message = response;
+      });
+    }
+    if (response is Map) {
+      setState(() {
+        data = response;
+        data.forEach((k, v) => dietIdList.add(k));
+      });
+    }
+    setState(() {
+      loading = false;
+    });
+    print(dietIdList);
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +69,27 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
-                children: dietList.map((String value) {
-                  return DietListButton(
-                    dietPlanName: dietMap[value][0],
-                    state: dietMap[value][1],
-                  );
-                }).toList(),
-              ),
+                  children: data.isNotEmpty
+                      ? dietIdList.map((String value) {
+                          return DietListButton(
+                            dietPlanName: data[value][0],
+                            state: data[value][1],
+                            dietPlanId: value,
+                          );
+                        }).toList()
+                      : [
+                          Center(
+                              child: Text(
+                            message,
+                            style: const TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                              letterSpacing: 2,
+                              wordSpacing: 10,
+                            ),
+                          )),
+                        ]),
             ),
           ),
         ),

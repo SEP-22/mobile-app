@@ -1,14 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class DietListButton extends StatelessWidget {
   const DietListButton(
-      {super.key, required this.dietPlanName, required this.state});
+      {super.key,
+      required this.dietPlanName,
+      required this.state,
+      required this.dietPlanId});
   final String dietPlanName;
   final bool state;
-  //final List data;
+  final String dietPlanId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,11 @@ class DietListButton extends StatelessWidget {
         child: ElevatedButton(
             onPressed: () {
               print(dietPlanName);
+              Navigator.pushNamed(context, '/selectedplan', arguments: {
+                'planId': dietPlanId,
+                'status': state,
+                'name': dietPlanName
+              });
             },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(200, 70),

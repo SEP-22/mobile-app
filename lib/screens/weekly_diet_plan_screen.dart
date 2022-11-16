@@ -8,13 +8,15 @@ import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
 
 class WeeklyDietPlan extends StatefulWidget {
-  const WeeklyDietPlan({super.key});
+  //const WeeklyDietPlan({super.key});
+  static const routeName = "/selectedplan";
 
   @override
   State<WeeklyDietPlan> createState() => _WeeklyDietPlanState();
 }
 
 class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
+  Map passedArgs = {};
   //List of week days
   List<String> weekdays = [
     "Monday",
@@ -48,7 +50,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     setState(() {
       loading = false;
     });
-    print("here");
+    //print("here");
     print(data);
   }
 
@@ -60,6 +62,10 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
 
   @override
   Widget build(BuildContext context) {
+    passedArgs = passedArgs.isNotEmpty
+        ? passedArgs
+        : ModalRoute.of(context)?.settings.arguments as Map;
+
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
