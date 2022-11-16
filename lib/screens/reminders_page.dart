@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import '../services/reminders/notification_service.dart';
+import '../services/reminders/Reminder.dart';
+import '../services/reminders/reminder_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({super.key});
@@ -11,12 +14,41 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
+  String message = "";
+  String id = "";
+  bool loading = true;
   bool breakfast = false;
-  TimeOfDay breakfastTime = const TimeOfDay(hour: 08, minute: 00);
+  TimeOfDay breakfastTime = const TimeOfDay(hour: 00, minute: 00);
   bool lunch = false;
-  TimeOfDay lunchTime = const TimeOfDay(hour: 01, minute: 00);
+  TimeOfDay lunchTime = const TimeOfDay(hour: 00, minute: 00);
   bool dinner = false;
-  TimeOfDay dinnerTime = const TimeOfDay(hour: 20, minute: 30);
+  TimeOfDay dinnerTime = const TimeOfDay(hour: 00, minute: 00);
+
+  void getData() async {
+    print("hello");
+    var response = await getReminder();
+    if (response is String) {
+      setState(() {
+        message = response;
+      });
+    }
+    if (response is Reminder) {
+      setState(() {
+        id = response.id;
+        breakfast = response.breakfastOn;
+        lunch = response.lunchOn;
+        dinner = response.dinnerOn;
+        breakfastTime = response.breakfastTime;
+        lunchTime = response.lunchTime;
+        dinnerTime = response.dinnerTime;
+        message = "";
+      });
+    }
+    setState(() {
+      loading = false;
+    });
+    print(response);
+  }
 
   late final NotificationService notificationService;
   @override
@@ -24,6 +56,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     notificationService = NotificationService();
     listenToNotificationStream();
     notificationService.initializePlatformNotifications();
+    getData();
     super.initState();
   }
 
@@ -58,16 +91,23 @@ class _ReminderScreenState extends State<ReminderScreen> {
       return;
     }
 
-    setState(() {
-      breakfastTime = newTime;
-      breakfast = true;
-    });
+    String res = await updateBreakfast(id, newTime, true);
+
+    if (res == 'success') {
+      setState(() {
+        breakfastTime = newTime;
+        breakfast = true;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
 
     await notificationService.showDailyNotification(
         id: 0,
         title: "Breakfast Time",
         body: "It is time to have your BREAKFAST !!!",
-        payload: "You just took breakfast! Huurray!",
+        payload: "You are here to take your breakfast! Huurray!",
         schedule: tz.TZDateTime.local(
             2020, 6, 1, newTime.hour, newTime.minute, 0, 0, 0));
   }
@@ -95,6 +135,18 @@ class _ReminderScreenState extends State<ReminderScreen> {
       return;
     }
 
+    String res = await updateLunch(id, newTime, true);
+
+    if (res == 'success') {
+      setState(() {
+        breakfastTime = newTime;
+        breakfast = true;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
+
     setState(() {
       lunchTime = newTime;
       lunch = true;
@@ -104,7 +156,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         id: 1,
         title: "Lunch Time",
         body: "It is time to have your LUNCH !!!",
-        payload: "You just took lunch! Huurray!",
+        payload: "You are here to take your lunch! Huurray!",
         schedule: tz.TZDateTime.local(
             2020, 6, 1, newTime.hour, newTime.minute, 0, 0, 0));
   }
@@ -132,6 +184,18 @@ class _ReminderScreenState extends State<ReminderScreen> {
       return;
     }
 
+    String res = await updateDinner(id, newTime, true);
+
+    if (res == 'success') {
+      setState(() {
+        breakfastTime = newTime;
+        breakfast = true;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
+
     setState(() {
       dinnerTime = newTime;
       dinner = true;
@@ -141,30 +205,66 @@ class _ReminderScreenState extends State<ReminderScreen> {
         id: 2,
         title: "Dinner Time",
         body: "It is time to have your DINNER !!!",
-        payload: "You just took dinner! Huurray!",
+        payload: "You are here to take your dinner! Huurray!",
         schedule: tz.TZDateTime.local(
             2020, 6, 1, newTime.hour, newTime.minute, 0, 0, 0));
   }
 
   void cancelBreakfast() async {
-    await notificationService.cancelNotifications(0);
-    setState(() {
-      breakfast = false;
-    });
+    String res = await cancelDBBreakfast(id);
+
+    if (res == 'success') {
+      await notificationService.cancelNotifications(0);
+      setState(() {
+        breakfast = false;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
   }
 
   void cancelLunch() async {
-    await notificationService.cancelNotifications(1);
-    setState(() {
-      lunch = false;
-    });
+    String res = await cancelDBLunch(id);
+
+    if (res == 'success') {
+      await notificationService.cancelNotifications(1);
+      setState(() {
+        lunch = false;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
   }
 
   void cancelDinner() async {
-    await notificationService.cancelNotifications(2);
-    setState(() {
-      dinner = false;
-    });
+    String res = await cancelDBDinner(id);
+
+    if (res == 'success') {
+      await notificationService.cancelNotifications(2);
+      setState(() {
+        dinner = false;
+      });
+    } else {
+      showSnackBar();
+      return;
+    }
+  }
+
+  void showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(children: const [
+          Icon(
+            Icons.error,
+            color: Colors.pink,
+            size: 24.0,
+          ),
+          Text('Couldn\'t update. Something went Wrong!')
+        ]),
+      ),
+    );
   }
 
   @override
@@ -187,148 +287,169 @@ class _ReminderScreenState extends State<ReminderScreen> {
         color: Colors.lightGreen[100],
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 8.0),
-          child: Column(children: [
-            const Text("NEVER miss a MEAL",
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Color(0xFF263238),
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                  wordSpacing: 4,
-                )),
-            const SizedBox(
-              height: 5,
-            ),
-            const Text("set reminders for each meal",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w300,
-                )),
-            const SizedBox(
-              height: 25,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 6,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Breakfast",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color(0xFF1b5e20),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Text("$bhours:$bminutes",
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: Color(0xFF7cb342),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Switch(
-                        // This bool value toggles the switch.
-                        value: breakfast,
-                        activeColor: const Color(0xfff178b6),
-                        onChanged: (bool value) {
-                          // This is called when the user toggles the switch.
-                          if (value) {
-                            setBreakfast();
-                          } else {
-                            cancelBreakfast();
-                          }
-                        },
+          child: !loading && message == ""
+              ? Column(
+                  children: [
+                    const Text("NEVER miss a MEAL",
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Color(0xFF263238),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          wordSpacing: 4,
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text("set reminders for each meal",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                        )),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    AspectRatio(
+                      aspectRatio: 16 / 6,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("Breakfast",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color(0xFF1b5e20),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Text("$bhours:$bminutes",
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    color: Color(0xFF7cb342),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Switch(
+                                // This bool value toggles the switch.
+                                value: breakfast,
+                                activeColor: const Color(0xfff178b6),
+                                onChanged: (bool value) {
+                                  // This is called when the user toggles the switch.
+                                  if (value) {
+                                    setBreakfast();
+                                  } else {
+                                    cancelBreakfast();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 6,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Lunch",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color(0xFF1b5e20),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Text("$lhours:$lminutes",
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: Color(0xFF7cb342),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Switch(
-                        // This bool value toggles the switch.
-                        value: lunch,
-                        activeColor: const Color(0xfff178b6),
-                        onChanged: (bool value) {
-                          // This is called when the user toggles the switch.
-                          if (value) {
-                            setLunch();
-                          } else {
-                            cancelLunch();
-                          }
-                        },
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    AspectRatio(
+                      aspectRatio: 16 / 6,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("Lunch",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color(0xFF1b5e20),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Text("$lhours:$lminutes",
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    color: Color(0xFF7cb342),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Switch(
+                                // This bool value toggles the switch.
+                                value: lunch,
+                                activeColor: const Color(0xfff178b6),
+                                onChanged: (bool value) {
+                                  // This is called when the user toggles the switch.
+                                  if (value) {
+                                    setLunch();
+                                  } else {
+                                    cancelLunch();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 6,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Dinner",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color(0xFF1b5e20),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Text("$dhours:$dminutes",
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: Color(0xFF7cb342),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Switch(
-                        // This bool value toggles the switch.
-                        value: dinner,
-                        activeColor: const Color(0xfff178b6),
-                        onChanged: (bool value) {
-                          // This is called when the user toggles the switch.
-                          if (value) {
-                            setDinner();
-                          } else {
-                            cancelDinner();
-                          }
-                        },
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    AspectRatio(
+                      aspectRatio: 16 / 6,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("Dinner",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color(0xFF1b5e20),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Text("$dhours:$dminutes",
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    color: Color(0xFF7cb342),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Switch(
+                                // This bool value toggles the switch.
+                                value: dinner,
+                                activeColor: const Color(0xfff178b6),
+                                onChanged: (bool value) {
+                                  // This is called when the user toggles the switch.
+                                  if (value) {
+                                    setDinner();
+                                  } else {
+                                    cancelDinner();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ]),
+                    ),
+                  ],
+                )
+              : message == ""
+                  ? const Center(
+                      child: SpinKitSpinningLines(
+                        color: Colors.blueGrey,
+                        size: 50.0,
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 2,
+                        wordSpacing: 10,
+                      ),
+                    )),
         ),
       ),
     );
@@ -343,7 +464,8 @@ class MySecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("JustWater"),
+        title: const Text("Meal Time"),
+        backgroundColor: Colors.green[500],
         centerTitle: true,
       ),
       body: Center(
@@ -352,9 +474,17 @@ class MySecondScreen extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 100),
-              child: Image.asset(
-                "assets/images/justwater.png",
-              ),
+              child: payload.contains('breakfast')
+                  ? Image.asset(
+                      "assets/breakfast.png",
+                    )
+                  : payload.contains('lunch')
+                      ? Image.asset(
+                          "assets/lunch.png",
+                        )
+                      : Image.asset(
+                          "assets/dinner.png",
+                        ),
             ),
             Text(payload)
           ],
