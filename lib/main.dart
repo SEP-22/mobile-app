@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DietPlanListScreen(),
+      home: const HomeScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         FoodScreen.routeName: (context) => FoodScreen(),
