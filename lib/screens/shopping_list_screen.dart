@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:flutter_application_1/widgets/food_item.dart';
+import '../const.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen({super.key});
@@ -43,7 +44,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     //food template data
 
     var response = await api_service.fetchGet(
-        "http://192.168.1.9:4000/shoppingList/getShoppingListsFromUserId/6360cf9f0ebc552ba5863f87");
+        "${uri}shoppingList/getShoppingListsFromUserId/6360cf9f0ebc552ba5863f87");
     print("shoppingList taken");
     var data = json.decode(response.body);
     for (var shoppingList in data) {
