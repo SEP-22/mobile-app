@@ -6,6 +6,7 @@ import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
+import 'package:http/http.dart';
 
 class WeeklyDietPlan extends StatefulWidget {
   //const WeeklyDietPlan({super.key});
@@ -32,10 +33,12 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
   String message = "Loading...";
   Map data = {};
   bool loading = true;
+  String id = "";
 
   void getData() async {
-    var temp_dietPlanDetails = new Map();
-    var response = await getDietPlanById();
+    //var temp_dietPlanDetails = new Map();
+    //print(passedArgs['planId']);
+    var response = await getDietPlanById(passedArgs['planId']);
     if (response is String) {
       setState(() {
         message = response;
@@ -50,26 +53,31 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     setState(() {
       loading = false;
     });
-    //print("here");
-    print(data);
+    print("here");
+    //print(data);
   }
 
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   //getData();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    passedArgs = passedArgs.isNotEmpty
-        ? passedArgs
-        : ModalRoute.of(context)?.settings.arguments as Map;
-
+    if (passedArgs.isEmpty) {
+      passedArgs = ModalRoute.of(context)?.settings.arguments as Map;
+      getData();
+    } else {
+      //getData();
+    }
+    // passedArgs = passedArgs.isNotEmpty
+    //     ? passedArgs
+    //     : ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: data.isNotEmpty ? Text(data['name']) : Text("Loading..."),
+        title: Text(passedArgs['name']),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),

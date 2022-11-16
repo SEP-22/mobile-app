@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 
 class DietListButton extends StatelessWidget {
   const DietListButton(
@@ -9,6 +10,25 @@ class DietListButton extends StatelessWidget {
   final String dietPlanName;
   final bool state;
   final String dietPlanId;
+  //late String whatever;
+  //late Map whatever2;
+
+  // void getData() async {
+  //   //var temp_dietPlanDetails = new Map();
+  //   print(dietPlanId);
+  //   var response = await getDietPlanById(dietPlanId);
+  //   if (response is String) {
+  //     whatever = response;
+  //     whatever2 = {};
+  //   }
+  //   if (response is Map) {
+  //     whatever2 = response;
+  //     whatever = "";
+  //   }
+
+  //   //print("here");
+  //   //print(data);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +38,12 @@ class DietListButton extends StatelessWidget {
         width: 280,
         child: ElevatedButton(
             onPressed: () {
-              print(dietPlanName);
+              //getData();
+              //print(whatever2);
               Navigator.pushNamed(context, '/selectedplan', arguments: {
                 'planId': dietPlanId,
                 'status': state,
-                'name': dietPlanName
+                'name': dietPlanName,
               });
             },
             style: ElevatedButton.styleFrom(

@@ -8,8 +8,7 @@ class CompleteFoodItem extends StatefulWidget {
   late String amount;
   late String calorie;
 
-
-  CompleteFoodItem(String name,String img,String amount,String calorie){
+  CompleteFoodItem(String name, String img, String amount, String calorie) {
     this.name = name;
     this.img = img;
     this.amount = amount;
@@ -38,16 +37,12 @@ class _CompleteFoodItemState extends State<CompleteFoodItem> {
             color: Colors.white),
         child: Column(
           children: [
-            Hero(
-              tag: "tag",
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(widget.img),
-                        fit: BoxFit.contain)),
-              ),
+            Container(
+              height: 120,
+              width: 120,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(widget.img), fit: BoxFit.contain)),
             ),
             Text(
               widget.name,
