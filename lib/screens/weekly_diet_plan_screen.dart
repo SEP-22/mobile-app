@@ -223,10 +223,10 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
   SelectedItem(BuildContext context, item) {
     switch (item) {
       case 0:
-        print("Activate");
+        print("Activate${passedArgs['planId']}");
         break;
       case 1:
-        print("Delete");
+        print("Delete${passedArgs['planId']}");
         break;
     }
   }
