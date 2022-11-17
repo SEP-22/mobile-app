@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
@@ -279,10 +280,71 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
   SelectedItem(BuildContext context, item) {
     switch (item) {
       case 0:
-        print("Activate${passedArgs['planId']}");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Activate Diet Plan'),
+                  content: Text('Do you want to make this diet plan active?'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          print("Activate No ${passedArgs['planId']}");
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(color: Colors.pinkAccent),
+                        )),
+                    TextButton(
+                        onPressed: () async {
+                          print("Activate Yes ${passedArgs['planId']}");
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          await Navigator.of(context).push(
+                              new MaterialPageRoute(
+                                  builder: (context) => DietPlanListScreen()));
+                          //setState(() {});
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(color: Colors.green[400]),
+                        ))
+                  ],
+                ));
         break;
       case 1:
-        print("Delete${passedArgs['planId']}");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Delete Diet Plan'),
+                  content: Text(
+                      'Are you sure you want to delete this diet plan? This action is irreversible and the associated shopping list will also get deleted!!'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          print("Delete No ${passedArgs['planId']}");
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(color: Colors.pinkAccent),
+                        )),
+                    TextButton(
+                        onPressed: () async {
+                          print("Delete Yes ${passedArgs['planId']}");
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          await Navigator.of(context).push(
+                              new MaterialPageRoute(
+                                  builder: (context) => DietPlanListScreen()));
+                          //setState(() {});
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(color: Colors.green[400]),
+                        ))
+                  ],
+                ));
         break;
     }
   }
