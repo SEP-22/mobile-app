@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/common/widgets/loader.dart';
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:intl/intl.dart';
@@ -41,9 +42,10 @@ class _FoodScreenState extends State<FoodScreen> {
     List<Widget> temp_Sugar = [];
 
     var response =
-        await api_service.fetchGet("http://localhost:4000/food/foodbycategory");
+        await api_service.fetchGet("http://10.0.2.2:4000/food/foodbycategory");
     print("fff");
     var data = json.decode(response.body);
+    print(data);
 
     for (var info in data["Vegetables_Fruits"]) {
       FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
@@ -153,14 +155,8 @@ class _FoodScreenState extends State<FoodScreen> {
                                   crossAxisCount: 2,
                                   children: Sugar,
                                 )
-                              : Container(
-                                  height: 60,
-                                  color: Colors.blue,
-                                )
-          : Container(
-              height: 60,
-              color: Colors.blue,
-            ),
+                              : Loader()
+          : Loader(),
     );
   }
 }

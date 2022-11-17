@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class LandingScreen extends StatelessWidget {
+  static const routeName = "/landingScreen";
+
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     onPrimary: Colors.black87,
     primary: Colors.pink[300],
@@ -15,6 +22,8 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    // print(user.email);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Eat Smart"),

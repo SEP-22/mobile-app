@@ -1,10 +1,12 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class SelectFoodArguments {
   SelectFoodArguments({required this.addFood, required this.selectedFood});
@@ -56,24 +58,25 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   Future<void> submitPreferedFood() async {
     var response = await api_service.fetchPost(
-        "http://localhost:4000/user/preferedfoods",
+        "http://10.0.2.2:4000/user/preferedfoods",
         {"user_Id": "63368984ba7e4ea7b42b792b", "foods": seletedFood});
     var data = json.decode(response.body);
     // print(data);
   }
 
   Future<void> generateDietPlan(String id) async {
+    print("rrr");
     var response = await api_service.fetchPost(
-        "http://localhost:4000/dietPlan/generatedietplan",
-        {"dietPlan_Id": id});
+        "http://10.0.2.2:4000/dietPlan/generatedietplan", {"dietPlan_Id": id});
     var data = json.decode(response.body);
+
     print(data["message"]);
   }
 
-  Future<void> submitData() async {
+  Future<void> submitData(String id) async {
     var response =
-        await api_service.fetchPost("http://localhost:4000/dietPlan/quiz", {
-      "user_Id": "63368984ba7e4ea7b42b792b",
+        await api_service.fetchPost("http://10.0.2.2:4000/dietPlan/quiz", {
+      "user_Id": id,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
       "activity":
@@ -89,6 +92,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     var data = json.decode(response.body);
 
     submitPreferedFood();
+
     generateDietPlan(data["_id"]);
 
     // print(data);
@@ -106,6 +110,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    print(user.id);
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -137,8 +143,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                   color: Colors.white,
                   margin: const EdgeInsets.only(
                     top: 20,
-
-),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
@@ -244,8 +249,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 100),
                     child: Column(
-
-children: [
+                      children: [
                         const Text(
                           "Height (cm)",
                           style: TextStyle(
@@ -350,8 +354,7 @@ children: [
                           }).toList(),
                           onChanged: (newValue) {
                             setState(() {
-
-_selectedDailyActivityLevel = newValue!;
+                              _selectedDailyActivityLevel = newValue!;
                             });
                           },
                         ),
@@ -457,8 +460,7 @@ _selectedDailyActivityLevel = newValue!;
                                 setState(() {
                                   this.diabitics = diabitics!;
                                 });
-
-},
+                              },
                             ), //Checkbox
                           ], //<Widget>[]
                         ),
@@ -545,7 +547,9 @@ _selectedDailyActivityLevel = newValue!;
               ),
               ElevatedButton(
                 style: raisedButtonStyle,
-                onPressed: submitData,
+                onPressed: () {
+                  submitData(user.id);
+                },
                 child: Text(
                   'Continue',
                   style: TextStyle(
