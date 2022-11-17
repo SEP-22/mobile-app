@@ -56,10 +56,10 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     });
   }
 
-  Future<void> submitPreferedFood() async {
+  Future<void> submitPreferedFood(String id) async {
     var response = await api_service.fetchPost(
         "http://10.0.2.2:4000/user/preferedfoods",
-        {"user_Id": "63368984ba7e4ea7b42b792b", "foods": seletedFood});
+        {"user_Id": id, "foods": seletedFood});
     var data = json.decode(response.body);
     // print(data);
   }
@@ -68,9 +68,84 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     print("rrr");
     var response = await api_service.fetchPost(
         "http://10.0.2.2:4000/dietPlan/generatedietplan", {"dietPlan_Id": id});
-    var data = json.decode(response.body);
+    var data1 = json.decode(response.body);
 
-    print(data["message"]);
+    // print(data1["message"]);
+
+    var data = data1["message"].split("}");
+    data.removeLast();
+    List dietPlan = [];
+
+    for (var element in data) {
+      Map obj = {};
+      var i1 = element.indexOf(":");
+      var i2 = element.indexOf(":", i1 + 1);
+      var i3 = element.indexOf("breakfast") + 12;
+      var i4 = element.indexOf("lunch") + 8;
+      var i5 = element.indexOf("dinner") + 10;
+      var dp = element.substring(i1, i2);
+      var i = element.substring(i2, i3);
+      var br = element.substring(i3, i4).split("],");
+      var ln = element.substring(i4, i5).split("],");
+      var dn = element.substring(i5).split("],");
+      br.removeLast();
+      List b = [];
+      for (var e in br) {
+        var t1 = e.indexOf(",");
+        var t2 = e.indexOf(",", t1 + 1);
+        var t3 = e.indexOf(",", t2 + 1);
+        var t4 = e.indexOf(",", t3 + 1);
+        b.add([
+          e.substring(e.indexOf("'") + 1, t1 - 1),
+          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t2 + 3, e.indexOf("g") + 1),
+          e.substring(t3 + 3, t4 - 1),
+          e.substring(t4 + 3, e.lastIndexOf("'")),
+        ]);
+      }
+      ln.removeLast();
+      List l = [];
+      for (var e in ln) {
+        var t1 = e.indexOf(",");
+        var t2 = e.indexOf(",", t1 + 1);
+        var t3 = e.indexOf(",", t2 + 1);
+        var t4 = e.indexOf(",", t3 + 1);
+        l.add([
+          e.substring(e.indexOf("'") + 1, t1 - 1),
+          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t2 + 3, e.indexOf("g") + 1),
+          e.substring(t3 + 3, t4 - 1),
+          e.substring(t4 + 3, e.lastIndexOf("'")),
+        ]);
+      }
+      dn.removeLast();
+      List d = [];
+      for (var e in dn) {
+        var t1 = e.indexOf(",");
+        var t2 = e.indexOf(",", t1 + 1);
+        var t3 = e.indexOf(",", t2 + 1);
+        var t4 = e.indexOf(",", t3 + 1);
+        d.add([
+          e.substring(e.indexOf("'") + 1, t1 - 1),
+          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t2 + 3, e.indexOf("g") + 1),
+          e.substring(t3 + 3, t4 - 1),
+          e.substring(t4 + 3, e.lastIndexOf("'")),
+        ]);
+      }
+      obj["dietPlan_Id"] = dp.substring(3, dp.indexOf(",") - 1);
+      obj["id"] = int.parse(i.substring(2, i.indexOf(",")));
+      obj["breakfast"] = b;
+      obj["lunch"] = l;
+      obj["dinner"] = d;
+      dietPlan.add(obj);
+    }
+
+    print("dietPlan");
+
+    for (var i in dietPlan) {
+      print(i["id"]);
+    }
   }
 
   Future<void> submitData(String id) async {
@@ -90,8 +165,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     });
 
     var data = json.decode(response.body);
+    print(data);
 
-    submitPreferedFood();
+    submitPreferedFood(id);
 
     generateDietPlan(data["_id"]);
 
