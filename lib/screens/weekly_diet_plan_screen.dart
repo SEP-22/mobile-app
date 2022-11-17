@@ -77,10 +77,34 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: Text(passedArgs['name']),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
+          title: Text(passedArgs['name']),
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          actions: passedArgs['status']
+              ? [
+                  PopupMenuButton(
+                      itemBuilder: (context) => [
+                            PopupMenuItem<int>(
+                              value: 1,
+                              child: Text("Delete"),
+                            ),
+                          ],
+                      onSelected: ((item) => SelectedItem(context, item))),
+                ]
+              : [
+                  PopupMenuButton(
+                      itemBuilder: (context) => [
+                            PopupMenuItem<int>(
+                              value: 0,
+                              child: Text("Activate"),
+                            ),
+                            PopupMenuItem<int>(
+                              value: 1,
+                              child: Text("Delete"),
+                            ),
+                          ],
+                      onSelected: ((item) => SelectedItem(context, item))),
+                ]),
       body: SingleChildScrollView(
         child: Container(
           //width: double.infinity,
@@ -194,5 +218,16 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
         ),
       ),
     );
+  }
+
+  SelectedItem(BuildContext context, item) {
+    switch (item) {
+      case 0:
+        print("Activate");
+        break;
+      case 1:
+        print("Delete");
+        break;
+    }
   }
 }
