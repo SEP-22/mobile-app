@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'dart:convert';
+import '../const.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -24,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
     List<String> temp_profile_details = [];
 
     var response =
-        await api_service.fetchGet("http://192.168.1.9:4000/user/profileDetails/6360cf9f0ebc552ba5863f87");
+        await api_service.fetchGet("${uri}user/profileDetails/6360cf9f0ebc552ba5863f87");
     print("Im here");
     var data = json.decode(response.body);
     temp_profile_details.add(data["_id"]);

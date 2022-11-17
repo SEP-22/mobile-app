@@ -7,6 +7,7 @@ import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../const.dart';
 
 class SelectFoodArguments {
   SelectFoodArguments({required this.addFood, required this.selectedFood});
@@ -58,7 +59,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   Future<void> submitPreferedFood(String id) async {
     var response = await api_service.fetchPost(
-        "http://10.0.2.2:4000/user/preferedfoods",
+        "${uri}user/preferedfoods",
         {"user_Id": id, "foods": seletedFood});
     var data = json.decode(response.body);
     // print(data);
@@ -67,7 +68,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   Future<void> generateDietPlan(String id) async {
     print("rrr");
     var response = await api_service.fetchPost(
-        "http://10.0.2.2:4000/dietPlan/generatedietplan", {"dietPlan_Id": id});
+        "${uri}dietPlan/generatedietplan", {"dietPlan_Id": id});
     var data1 = json.decode(response.body);
 
     // print(data1["message"]);
@@ -150,7 +151,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   Future<void> submitData(String id) async {
     var response =
-        await api_service.fetchPost("http://10.0.2.2:4000/dietPlan/quiz", {
+        await api_service.fetchPost("${uri}dietPlan/quiz", {
       "user_Id": id,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
