@@ -33,7 +33,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch:Colors.green,
       ),
-      home:  HomeScreen(),
+      home:  Provider.of<UserProvider>(context).user.token.isNotEmpty
+          ? Provider.of<UserProvider>(context).user.role == 'user'
+              ?  LandingScreen()
+              : const AuthScreen()
+          : const AuthScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         LandingScreen.routeName: (context) => LandingScreen(),
