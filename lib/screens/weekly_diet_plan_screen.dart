@@ -58,6 +58,23 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     //print(data);
   }
 
+  void activateDietPlan() async {
+    Map data = {
+      'user_Id': "6360cf9f0ebc552ba5863f87",
+      "activePlan_Id": passedArgs['planId']
+    };
+    bool response = await changeActiveDietPlan(data);
+    if (response) {
+      print("Activate Yes ${passedArgs['planId']}");
+      Navigator.pop(context);
+      Navigator.pop(context);
+      await Navigator.of(context).push(
+          new MaterialPageRoute(builder: (context) => DietPlanListScreen()));
+    } else {
+      print(response);
+    }
+  }
+
   // @override
   // void initState() {
   //   //getData();
@@ -296,14 +313,9 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                           style: TextStyle(color: Colors.pinkAccent),
                         )),
                     TextButton(
-                        onPressed: () async {
-                          print("Activate Yes ${passedArgs['planId']}");
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          await Navigator.of(context).push(
-                              new MaterialPageRoute(
-                                  builder: (context) => DietPlanListScreen()));
+                        onPressed: () {
                           //setState(() {});
+                          activateDietPlan();
                         },
                         child: Text(
                           'Yes',
