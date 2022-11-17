@@ -176,13 +176,20 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    onPrimary: Colors.black87,
-    primary: Colors.pink[300],
-    minimumSize: Size(88, 36),
-    padding: EdgeInsets.symmetric(horizontal: 16),
+    textStyle: const TextStyle(
+      color: Colors.black87,
+    ) ,
+    backgroundColor: const Color(0xfff178b6),
+    minimumSize: const Size(120, 50),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2)),
+      borderRadius: BorderRadius.all(Radius.circular(3)),
     ),
+  );
+
+  final choosedateButtonStyle = ElevatedButton.styleFrom(
+    elevation: 0,
+    backgroundColor:Colors.transparent,
   );
 
   @override
@@ -203,7 +210,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 1,
             horizontal: 20,
           ),
@@ -234,7 +241,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
@@ -244,15 +251,15 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                               Text(
                                 _selectedDate == null
                                     ? "No Date Choosen!"
-                                    : "${DateFormat.yMd().format(_selectedDate!)}",
+                                    : DateFormat.yMd().format(_selectedDate!),
                               ),
                               ElevatedButton(
                                 onPressed: _presentDatePicker,
-                                child: Text(
+                                style: choosedateButtonStyle,
+                                child: const Text(
                                   "Choose Date",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold ,fontSize: 20, color: Color(0xfff178b6)),
                                 ),
-                                style: raisedButtonStyle,
                               ),
                             ],
                           ),
@@ -287,7 +294,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         DropdownButton<String>(
@@ -296,7 +303,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           items: <String>['Male', 'Female'].map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: new Text(value),
+                              child: Text(value),
                             );
                           }).toList(),
                           onChanged: (newValue) {
@@ -334,11 +341,11 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         TextField(
-                          decoration: InputDecoration(hintText: "Height"),
+                          decoration: const InputDecoration(hintText: "Height"),
                           controller: heightController,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.number,
@@ -372,11 +379,11 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         TextField(
-                          decoration: InputDecoration(hintText: "Weight"),
+                          decoration: const InputDecoration(hintText: "Weight"),
                           controller: weightController,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.number,
@@ -411,7 +418,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         DropdownButton<String>(
@@ -465,7 +472,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         DropdownButton<String>(
@@ -478,7 +485,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           ].map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: new Text(value),
+                              child: Text(value),
                             );
                           }).toList(),
                           onChanged: (newValue) {
@@ -517,22 +524,22 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 40,
                             ), //SizedBox
-                            Text(
+                            const Text(
                               'Diabitics: ',
                               style: TextStyle(fontSize: 17.0),
                             ), //Text
-                            SizedBox(width: 10), //SizedBox
+                            const SizedBox(width: 10), //SizedBox
                             /** Checkbox Widget **/
                             Checkbox(
-                              value: this.diabitics,
+                              value: diabitics,
                               onChanged: (diabitics) {
                                 setState(() {
                                   this.diabitics = diabitics!;
@@ -542,18 +549,19 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                           ], //<Widget>[]
                         ),
                         Row(
+                          
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 40,
                             ), //SizedBox
-                            Text(
+                            const Text(
                               'High Blood Pressure: ',
                               style: TextStyle(fontSize: 17.0),
                             ), //Text
-                            SizedBox(width: 10), //SizedBox
+                            const SizedBox(width: 10), //SizedBox
                             /** Checkbox Widget **/
                             Checkbox(
-                              value: this.bloodPressure,
+                              value: bloodPressure,
                               onChanged: (bloodPressure) {
                                 setState(() {
                                   this.bloodPressure = bloodPressure!;
@@ -564,17 +572,17 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                         ),
                         Row(
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 40,
                             ), //SizedBox
-                            Text(
+                            const Text(
                               'Cholestrol: ',
                               style: TextStyle(fontSize: 17.0),
                             ), //Text
-                            SizedBox(width: 10), //SizedBox
+                            const SizedBox(width: 10), //SizedBox
                             /** Checkbox Widget **/
                             Checkbox(
-                              value: this.cholestrol,
+                              value: cholestrol,
                               onChanged: (cholestrol) {
                                 setState(() {
                                   this.cholestrol = cholestrol!;
@@ -604,22 +612,32 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 60),
                       child: ElevatedButton(
-                        style: raisedButtonStyle,
+                        style: choosedateButtonStyle,
                         onPressed: () {
                           Navigator.of(context).pushNamed(FoodScreen.routeName,
                               arguments: SelectFoodArguments(
                                   addFood: addFood, selectedFood: seletedFood));
                         },
-                        child: Text(
-                          'Select Foods',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.food_bank,
+                            color: Color(0xfff178b6),
+                            size: 40,),
+                            SizedBox(width: 5,),
+                            Text(
+                              'Select Foods',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xfff178b6)
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -627,14 +645,14 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                 onPressed: () {
                   submitData(user.id);
                 },
-                child: Text(
+                child: const Text(
                   'Continue',
                   style: TextStyle(
                     fontSize: 20,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               )
             ],

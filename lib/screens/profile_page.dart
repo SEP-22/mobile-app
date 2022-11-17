@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'dart:convert';
 import '../const.dart';
 
@@ -53,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
+      drawer: NavDrawer(),
       body: Container(
         child: GestureDetector(
           onTap: () {
@@ -60,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: ListView(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Center(
@@ -69,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       width: 150,
                       height: 150,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
@@ -85,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 35,
                         width: 35,
                         decoration: BoxDecoration(
-                          color: Colors.pinkAccent,
+                          color: Color(0xfff178b6),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
