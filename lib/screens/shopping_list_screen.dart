@@ -1,15 +1,27 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import 'package:flutter_application_1/widgets/food_item.dart';
+import '../const.dart';
 
 class ShoppingListScreen extends StatefulWidget {
-  //const ShoppingListScreen({super.key});
+  const ShoppingListScreen({super.key});
 
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();
 }
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
+  List completeShoppingList = [];
+  List<String> shoppingListNames = [];
+  String? valueChosen;
+  List currentShoppingList = [];
+  var slMap = new Map();
+  //food template
+  //List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
   List<Food> foods = [
     Food("Potato", "500 g", "200 cal",
         "https://nix-tag-images.s3.amazonaws.com/752_highres.jpg"),
@@ -20,6 +32,34 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     // Food("Cauliflower", "120 g", "200 cal",
     //     "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000")
   ];
+  @override
+  void initState() {
+    getShoppingList();
+    super.initState();
+  }
+
+  Future<void> getShoppingList() async {
+    List<String> temp_shoppingListNames = [];
+    var temp_map = new Map();
+    //food template data
+
+    var response = await api_service.fetchGet(
+        "${uri}shoppingList/getShoppingListsFromUserId/6360cf9f0ebc552ba5863f87");
+    print("shoppingList taken");
+    var data = json.decode(response.body);
+    for (var shoppingList in data) {
+      temp_shoppingListNames.add(shoppingList[0]);
+      temp_map[shoppingList[0]] = [shoppingList[2], shoppingList[1]];
+    }
+    print(temp_shoppingListNames);
+    print(temp_map);
+
+    setState(() {
+      shoppingListNames = temp_shoppingListNames;
+      //shoppingListValues = temp_shoppingListValues;
+      slMap = temp_map;
+    });
+  }
 
   Widget foodTemplate(food) {
     return Card(
@@ -72,12 +112,50 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: Text('My Diet Plans'),
+        title: Text('My Shopping Lists'),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
-      body: Column(
-        children: foods.map((e) => foodTemplate(e)).toList(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                decoration: BoxDecoration(
+                  color: Colors.white, //<-- SEE HERE
+                ),
+                margin: EdgeInsets.all(10),
+                child: DropdownButton<String>(
+                  value: valueChosen,
+                  hint: const Text("Select Shopping List"),
+                  items: shoppingListNames.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: new Text(slMap[value][0]),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChosen = newValue!;
+                      currentShoppingList = slMap[newValue][1];
+                      print(valueChosen);
+                      print(currentShoppingList);
+                    });
+                  },
+                ),
+              ),
+            ),
+            Column(
+              children: currentShoppingList
+                  // .map((e) => FoodItem(e[0], e[3], e[2]))
+                  // .toList(),
+                  .map((e) => foodTemplate(Food(e[0], '${e[1]}', "200", e[3])))
+                  .toList(),
+            ),
+          ],
+          //children: foods.map((e) => foodTemplate(e)).toList(),
+        ),
       ),
     );
   }
