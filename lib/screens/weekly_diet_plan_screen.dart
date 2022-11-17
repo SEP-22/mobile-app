@@ -77,33 +77,89 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-          title: Text(passedArgs['name']),
+          title: passedArgs['status']
+              ? Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(passedArgs['name']),
+                        Icon(
+                          Icons.run_circle_outlined,
+                          color: Colors.amber,
+                        )
+                      ]),
+                )
+              : Text(passedArgs['name']),
           centerTitle: true,
           backgroundColor: Colors.green,
           actions: passedArgs['status']
               ? [
-                  PopupMenuButton(
-                      itemBuilder: (context) => [
-                            PopupMenuItem<int>(
-                              value: 1,
-                              child: Text("Delete"),
-                            ),
-                          ],
-                      onSelected: ((item) => SelectedItem(context, item))),
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.pinkAccent[100]),
+                    child: PopupMenuButton<int>(
+                        itemBuilder: (context) => [
+                              PopupMenuItem<int>(
+                                value: 1,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Delete"),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.pinkAccent,
+                                      )
+                                    ]),
+                              ),
+                            ],
+                        onSelected: ((item) => SelectedItem(context, item))),
+                  ),
                 ]
               : [
-                  PopupMenuButton(
-                      itemBuilder: (context) => [
-                            PopupMenuItem<int>(
-                              value: 0,
-                              child: Text("Activate"),
-                            ),
-                            PopupMenuItem<int>(
-                              value: 1,
-                              child: Text("Delete"),
-                            ),
-                          ],
-                      onSelected: ((item) => SelectedItem(context, item))),
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.pinkAccent[100]),
+                    child: PopupMenuButton<int>(
+                        itemBuilder: (context) => [
+                              PopupMenuItem<int>(
+                                value: 0,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Activate"),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(
+                                        Icons.thumb_up,
+                                        color: Colors.green[400],
+                                      )
+                                    ]),
+                              ),
+                              PopupMenuDivider(),
+                              PopupMenuItem<int>(
+                                  value: 1,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Delete"),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.pinkAccent,
+                                        )
+                                      ])),
+                            ],
+                        onSelected: ((item) => SelectedItem(context, item))),
+                  ),
                 ]),
       body: SingleChildScrollView(
         child: Container(

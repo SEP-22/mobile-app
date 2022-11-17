@@ -65,12 +65,15 @@ class DietListButton extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
-                          height: 7,
+                          height: 5,
                         ),
-                        Icon(
-                          Icons.verified,
-                          color: Colors.pinkAccent,
-                        )
+                        Text(
+                          "Active",
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 102, 187, 106),
+                              fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ])
                 : Text(
                     dietPlanName,
