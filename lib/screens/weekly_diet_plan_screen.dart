@@ -75,6 +75,19 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     }
   }
 
+  void deletePlan() async {
+    bool response = await deleteDietPlan(passedArgs['planId']);
+    if (response) {
+      print("Delete Yes ${passedArgs['planId']}");
+      Navigator.pop(context);
+      Navigator.pop(context);
+      await Navigator.of(context).push(
+          new MaterialPageRoute(builder: (context) => DietPlanListScreen()));
+    } else {
+      print(response);
+    }
+  }
+
   // @override
   // void initState() {
   //   //getData();
@@ -343,12 +356,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                         )),
                     TextButton(
                         onPressed: () async {
-                          print("Delete Yes ${passedArgs['planId']}");
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          await Navigator.of(context).push(
-                              new MaterialPageRoute(
-                                  builder: (context) => DietPlanListScreen()));
+                          deletePlan();
                           //setState(() {});
                         },
                         child: Text(
