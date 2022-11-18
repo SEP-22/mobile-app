@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class FoodListButton extends StatelessWidget {
   static Map colors = {
     "All Foods": Colors.orange[300],
-    "Fruits and Vegetables": Colors.pink[300],
+    "Vegetables": Colors.pink[300],
+    "Fruits": Colors.pink[300],
     "Starchy food": Colors.pink[300],
-    "Dairy and Fats": Colors.pink[300],
+    "Dairy": Colors.pink[300],
     "Proteins": Colors.pink[300],
-    "Sugar": Colors.pink[300],
+    "Fats and Sugar": Colors.pink[300],
   };
   final String type;
   final List data;

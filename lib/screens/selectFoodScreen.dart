@@ -19,12 +19,13 @@ class FoodScreen extends StatefulWidget {
 
 class _FoodScreenState extends State<FoodScreen> {
   List food = [];
-  List<Widget> Vegetables_Fruits = [];
+  List<Widget> Vegetables = [];
+  List<Widget> Fruits = [];
   List<Widget> StarchyFood = [];
   List<Widget> Proteins = [];
-  List<Widget> Dairy_Fat = [];
-  List<Widget> Sugar = [];
-  int foodCategory = 1;
+  List<Widget> Dairy = [];
+  List<Widget> Fat_Sugar = [];
+  int foodCategory = 0;
 
   @override
   void initState() {
@@ -33,20 +34,26 @@ class _FoodScreenState extends State<FoodScreen> {
   }
 
   Future<void> getFoods() async {
-    List<Widget> temp_Vegetables_Fruits = [];
+    List<Widget> temp_Vegetables = [];
+    List<Widget> temp_Fruits = [];
     List<Widget> temp_StarchyFood = [];
     List<Widget> temp_Proteins = [];
-    List<Widget> temp_Dairy_Fat = [];
-    List<Widget> temp_Sugar = [];
+    List<Widget> temp_Dairy = [];
+    List<Widget> temp_Fat_Sugar = [];
 
     var response = await api_service.fetchGet("${uri}food/foodbycategory");
     print("fff");
     var data = json.decode(response.body);
     print(data);
 
-    for (var info in data["Vegetables_Fruits"]) {
+    for (var info in data["Vegetable"]) {
       FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
-      temp_Vegetables_Fruits.add(temp);
+      temp_Vegetables.add(temp);
+    }
+
+    for (var info in data["Fruits"]) {
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      temp_Fruits.add(temp);
     }
 
     for (var info in data["StarchyFood"]) {
@@ -59,22 +66,23 @@ class _FoodScreenState extends State<FoodScreen> {
       temp_Proteins.add(temp);
     }
 
-    for (var info in data["Dairy_Fat"]) {
+    for (var info in data["Dairy"]) {
       FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
-      temp_Dairy_Fat.add(temp);
+      temp_Dairy.add(temp);
     }
 
-    for (var info in data["Sugar"]) {
+    for (var info in data["Fat_Sugar"]) {
       FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
-      temp_Sugar.add(temp);
+      temp_Fat_Sugar.add(temp);
     }
 
     setState(() {
-      Vegetables_Fruits = temp_Vegetables_Fruits;
+      Vegetables = temp_Vegetables;
+      Fruits = temp_Fruits;
       StarchyFood = temp_StarchyFood;
       Proteins = temp_Proteins;
-      Dairy_Fat = temp_Dairy_Fat;
-      Sugar = temp_Sugar;
+      Dairy = temp_Dairy;
+      Fat_Sugar = temp_Fat_Sugar;
     });
     print(data);
   }
@@ -87,9 +95,21 @@ class _FoodScreenState extends State<FoodScreen> {
         backgroundColor: Colors.green,
         elevation: 0.0,
         centerTitle: false,
-        title: const Text(
-          "Select Foods",
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        title: Text(
+          foodCategory == 0
+              ? "Vegetables"
+              : foodCategory == 1
+                  ? "Fruits"
+                  : foodCategory == 2
+                      ? "Starchy Foods"
+                      : foodCategory == 3
+                          ? "Proteins"
+                          : foodCategory == 4
+                              ? "Dairy"
+                              : foodCategory == 5
+                                  ? "Fats and Sugar"
+                                  : "Select Foods",
+          style: const TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -106,54 +126,63 @@ class _FoodScreenState extends State<FoodScreen> {
         label: const Text('Next'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Vegetables_Fruits.length > 0
-          ? foodCategory == 1
+      body: Vegetables.isNotEmpty
+          ? foodCategory == 0
               ? GridView.count(
                   primary: false,
                   padding: const EdgeInsets.all(20),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   crossAxisCount: 2,
-                  children: Vegetables_Fruits,
+                  children: Vegetables,
                 )
-              : foodCategory == 2
+              : foodCategory == 1
                   ? GridView.count(
                       primary: false,
                       padding: const EdgeInsets.all(20),
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       crossAxisCount: 2,
-                      children: StarchyFood,
+                      children: Fruits,
                     )
-                  : foodCategory == 3
+                  : foodCategory == 2
                       ? GridView.count(
                           primary: false,
                           padding: const EdgeInsets.all(20),
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           crossAxisCount: 2,
-                          children: Proteins,
+                          children: StarchyFood,
                         )
-                      : foodCategory == 4
+                      : foodCategory == 3
                           ? GridView.count(
                               primary: false,
                               padding: const EdgeInsets.all(20),
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               crossAxisCount: 2,
-                              children: Dairy_Fat,
+                              children: Proteins,
                             )
-                          : foodCategory == 5
+                          : foodCategory == 4
                               ? GridView.count(
                                   primary: false,
                                   padding: const EdgeInsets.all(20),
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,
                                   crossAxisCount: 2,
-                                  children: Sugar,
+                                  children: Dairy,
                                 )
-                              : Loader()
-          : Loader(),
+                              : foodCategory == 5
+                                  ? GridView.count(
+                                      primary: false,
+                                      padding: const EdgeInsets.all(20),
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      crossAxisCount: 2,
+                                      children: Fat_Sugar,
+                                    )
+                                  : const Loader()
+          : const Loader(),
     );
   }
 }
