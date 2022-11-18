@@ -40,16 +40,20 @@ Future<Object> getFoodbyCategory() async {
       }
     }
 
-    List FruitsVegetables = [];
+    List Vegetables = [];
+    List Fruits = [];
     List StarchyFood = [];
     List Protein = [];
-    List DairyFat = [];
-    List Sugar = [];
+    List Dairy = [];
+    List FatSugar = [];
 
     for (var f in fd) {
       switch (f.category) {
-        case "Fruits and Vegetables":
-          FruitsVegetables.add(f);
+        case "Vegetables":
+          Vegetables.add(f);
+          break;
+        case "Fruits":
+          Fruits.add(f);
           break;
         case "Starchy food":
           StarchyFood.add(f);
@@ -57,22 +61,23 @@ Future<Object> getFoodbyCategory() async {
         case "Proteins":
           Protein.add(f);
           break;
-        case "Dairy and Fats":
-          DairyFat.add(f);
+        case "Dairy":
+          Dairy.add(f);
           break;
-        case "Sugar":
-          Sugar.add(f);
+        case "Fats and Sugar":
+          FatSugar.add(f);
           break;
         default:
       }
     }
 
     return {
-      'Fruits and Vegetables': FruitsVegetables,
+      'Vegetables': Vegetables,
+      'Fruits': Fruits,
       'Starchy food': StarchyFood,
-      'Dairy and Fats': DairyFat,
+      'Dairy': Dairy,
       'Proteins': Protein,
-      'Sugar': Sugar,
+      'Fats and Sugar': FatSugar,
       'All Foods': fd,
     };
   } else {

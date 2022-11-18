@@ -14,11 +14,12 @@ class FoodListScreen extends StatefulWidget {
 class _FoodListScreenState extends State<FoodListScreen> {
   static const items = [
     "All Foods",
-    "Fruits and Vegetables",
+    "Vegetables",
+    "Fruits",
     "Starchy food",
-    "Dairy and Fats",
     "Proteins",
-    "Sugar",
+    "Dairy",
+    "Fats and Sugar",
   ];
   String message = "";
   Map data = {};
@@ -63,37 +64,37 @@ class _FoodListScreenState extends State<FoodListScreen> {
           height: MediaQuery.of(context).size.height,
           color: Colors.lightGreen[100],
           child: data.isNotEmpty
-          ? Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              children: [
-                ...(items).map((type) {
-                  return FoodListButton(
-                    type: type,
-                    data: data[type],
-                  );
-                }).toList(),
-              ],
-            ),
-          )
-          : loading
-              ? const Center(
-                  child: SpinKitSpinningLines(
-                    color: Colors.blueGrey,
-                    size: 50.0,
+              ? Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      ...(items).map((type) {
+                        return FoodListButton(
+                          type: type,
+                          data: data[type],
+                        );
+                      }).toList(),
+                    ],
                   ),
                 )
-              : Center(
-                  child: Text(
-                  message,
-                  style: const TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 15,
-                    fontStyle: FontStyle.italic,
-                    letterSpacing: 2,
-                    wordSpacing: 10,
-                  ),
-                )),
+              : loading
+                  ? const Center(
+                      child: SpinKitSpinningLines(
+                        color: Colors.blueGrey,
+                        size: 50.0,
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 2,
+                        wordSpacing: 10,
+                      ),
+                    )),
         ),
       ),
     );
