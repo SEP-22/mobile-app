@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
+import 'package:flutter_application_1/screens/edit_food_select_screen.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:provider/provider.dart';
@@ -10,21 +12,21 @@ import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
 import '../const.dart';
 
-class SelectFoodArguments {
-  SelectFoodArguments({required this.addFood, required this.selectedFood});
+class SelectFoodArguments1 {
+  SelectFoodArguments1({required this.addFood, required this.selectedFood});
 
   final Function addFood;
   final List<String> selectedFood;
 }
 
-class CreateDietPlanScreen extends StatefulWidget {
-  static const routeName = "/addDietPlan";
+class EditDietPlanScreen extends StatefulWidget {
+  static const routeName = "/editDietPlan";
 
   @override
-  State<CreateDietPlanScreen> createState() => _CreateDietPlanScreenState();
+  State<EditDietPlanScreen> createState() => _EditDietPlanScreenState();
 }
 
-class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
+class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
   String? _selectedGender;
   String? _selectedDailyActivityLevel;
   String? _selectedDietIntention;
@@ -35,7 +37,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final nameController = TextEditingController();
+  String? dietId;
 
+  Map? currentUser = null;
 
   List<String> seletedFood = [];
 
@@ -154,9 +158,10 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     }
   }
 
-  Future<void> submitData(String id) async {
-    var response = await api_service.fetchPost("${uri}dietPlan/quiz", {
-      "user_Id": id,
+  Future<void> submitData(String userid, String dietId) async {
+    var response = await api_service
+        .fetchPost("${uri}dietPlan/updateactiveplan/" + dietId, {
+      "user_Id": userid,
       "name": nameController.text,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
@@ -173,7 +178,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     var data = json.decode(response.body);
     print(data);
 
-    submitPreferedFood(id);
+    submitPreferedFood(userid);
 
     generateDietPlan(data["_id"]);
 
@@ -197,10 +202,61 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
     backgroundColor: Colors.transparent,
   );
 
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
+  Future<Object> getAllPlanNamesAndStateByUserId(String id) async {
+    var response = await api_service.fetchGet("${uri}user/single/" + id);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      //print("list fetched");
+      print(data);
+      setState(() {
+        currentUser = data;
+        dietId = data["activeDietPlan"]["_id"];
+        _selectedGender =
+            capitalize(data["activeDietPlan"]["gender"].toString());
+        // _selectedDate  = DateFormat.yMd().parse(data["activeDietPlan"]["dob"]);
+        heightController.text = data["activeDietPlan"]["height"].toString();
+        weightController.text = data["activeDietPlan"]["weight"].toString();
+        nameController.text = data["activeDietPlan"]["name"].toString();
+        _selectedDietIntention = data["activeDietPlan"]["intention"] == "loose"
+            ? "Loose Weight"
+            : data["activeDietPlan"]["intention"] == "maintain"
+                ? "Maintain Weight"
+                : data["activeDietPlan"]["intention"] == "gain"
+                    ? "Gain Weight"
+                    : "";
+        _selectedDailyActivityLevel =
+            data["activeDietPlan"]["activity"] == "verylight"
+                ? "Very Light"
+                : data["activeDietPlan"]["activity"] == "light"
+                    ? "Light"
+                    : data["activeDietPlan"]["activity"] == "moderate"
+                        ? "Moderate"
+                        : data["activeDietPlan"]["activity"] == "heavy"
+                            ? "Heavy"
+                            : data["activeDietPlan"]["activity"] == "veryheavy"
+                                ? "Very Heavy"
+                                : "";
+
+        diabitics = data["activeDietPlan"]["diabetics"];
+        cholestrol = data["activeDietPlan"]["cholesterol"];
+        bloodPressure = data["activeDietPlan"]["bloodpressure"];
+      });
+      return data;
+    } else {
+      return 'Something went wrong';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
     print(user.id);
+    if (currentUser == null) {
+      print("f");
+      getAllPlanNamesAndStateByUserId(user.id);
+    }
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -212,6 +268,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
+      drawer: const NavDrawer(),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -659,8 +716,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                       child: ElevatedButton(
                         style: choosedateButtonStyle,
                         onPressed: () {
-                          Navigator.of(context).pushNamed(FoodScreen.routeName,
-                              arguments: SelectFoodArguments(
+                          Navigator.of(context).pushNamed(
+                              EditFoodScreen.routeName,
+                              arguments: SelectFoodArguments1(
                                   addFood: addFood, selectedFood: seletedFood));
                         },
                         child: Row(
@@ -690,7 +748,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
               ElevatedButton(
                 style: raisedButtonStyle,
                 onPressed: () {
-                  submitData(user.id);
+                  submitData(user.id, dietId!);
                 },
                 child: const Text(
                   'Continue',

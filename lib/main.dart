@@ -2,8 +2,9 @@ import 'package:flutter_application_1/providers/user_provider.dart';
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
+import 'package:flutter_application_1/screens/edit_food_select_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
-import 'package:flutter_application_1/screens/home_screen.dart';
+import 'package:flutter_application_1/screens/manage_screen.dart.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/reminders_page.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         FoodList.routeName: (context) => FoodList(),
         WeeklyDietPlan.routeName: (context) => WeeklyDietPlan(),
         DietPlanSelectorScreen.routeName: (context) => DietPlanSelectorScreen(),
+        EditFoodScreen.routeName: (context) => EditFoodScreen(),
       },
     );
   }
