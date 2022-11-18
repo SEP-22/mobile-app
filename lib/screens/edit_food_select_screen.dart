@@ -5,19 +5,20 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/common/widgets/loader.dart';
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
+import 'package:flutter_application_1/widgets/edit_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import '../const.dart';
 
-class FoodScreen extends StatefulWidget {
-  const FoodScreen({super.key});
-  static const routeName = "/selectFood";
+class EditFoodScreen extends StatefulWidget {
+  const EditFoodScreen({super.key});
+  static const routeName = "/editselectFood";
   @override
-  State<FoodScreen> createState() => _FoodScreenState();
+  State<EditFoodScreen> createState() => _EditFoodScreenState();
 }
 
-class _FoodScreenState extends State<FoodScreen> {
+class _EditFoodScreenState extends State<EditFoodScreen> {
   List food = [];
   List<Widget> Vegetables_Fruits = [];
   List<Widget> StarchyFood = [];
@@ -45,27 +46,32 @@ class _FoodScreenState extends State<FoodScreen> {
     print(data);
 
     for (var info in data["Vegetables_Fruits"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp =
+          EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Vegetables_Fruits.add(temp);
     }
 
     for (var info in data["StarchyFood"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp =
+          EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_StarchyFood.add(temp);
     }
 
     for (var info in data["Proteins"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp =
+          EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Proteins.add(temp);
     }
 
     for (var info in data["Dairy_Fat"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp =
+          EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Dairy_Fat.add(temp);
     }
 
     for (var info in data["Sugar"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp =
+          EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Sugar.add(temp);
     }
 

@@ -34,7 +34,7 @@ class AuthService {
       );
 
       http.Response res = await http.post(
-        Uri.parse('$uri/user/signUp'),
+        Uri.parse('${uri}user/signUp'),
         body: user.toJson(),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -64,7 +64,7 @@ class AuthService {
   }) async {
     try {
       http.Response res = await http.post(
-        Uri.parse('$uri/user/signIn'),
+        Uri.parse('${uri}user/signIn'),
         body: jsonEncode({
           'username': email,
           'password': password,
@@ -77,11 +77,12 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-
           SharedPreferences prefs = await SharedPreferences.getInstance();
           print(jsonEncode(jsonDecode(res.body)["user"]));
-          Provider.of<UserProvider>(context, listen: false).setUser(jsonEncode(jsonDecode(res.body)["user"]) );
-          await prefs.setString('x-auth-token', jsonDecode(res.body)["user"]['token']);
+          Provider.of<UserProvider>(context, listen: false)
+              .setUser(jsonEncode(jsonDecode(res.body)["user"]));
+          await prefs.setString(
+              'x-auth-token', jsonDecode(res.body)["user"]['token']);
           Navigator.pushNamedAndRemoveUntil(
             context,
             LandingScreen.routeName,
@@ -109,7 +110,7 @@ class AuthService {
       }
 
       var tokenRes = await http.post(
-        Uri.parse('$uri/tokenIsValid'),
+        Uri.parse('${uri}tokenIsValid'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token!
@@ -120,7 +121,7 @@ class AuthService {
 
       if (response == true) {
         http.Response userRes = await http.get(
-          Uri.parse('$uri/'),
+          Uri.parse('${uri}'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': token

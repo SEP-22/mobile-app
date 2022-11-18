@@ -54,17 +54,15 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
   String id = "";
 
   Future<dynamic> saveDietPlans() async {
-    List output=[];
-    for (var element in passedArgs){
-      if(selectedDietPlans[passedArgs.indexOf(element)]){
+    List output = [];
+    for (var element in passedArgs) {
+      if (selectedDietPlans[passedArgs.indexOf(element)]) {
         output.add(element);
       }
-
     }
-  
-    var response = await api_service.fetchPost("${uri}/dietPlan/savedietplan", {
-      "plans": output
-    });
+
+    var response = await api_service
+        .fetchPost("${uri}dietPlan/savedietplan", {"plans": output});
     var data = json.decode(response.body);
     print(data);
   }
@@ -216,7 +214,9 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
                             },
                             itemCount: passedArgs[current]["dinner"].length),
                       ),
-                      SizedBox(height: 65,)
+                      SizedBox(
+                        height: 65,
+                      )
                     ])
                   : Center(
                       child: Text(
