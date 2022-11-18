@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
@@ -141,10 +142,11 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
       dietPlan.add(obj);
     }
 
-    print("dietPlan");
+    Navigator.of(context)
+        .pushNamed(DietPlanSelectorScreen.routeName, arguments: dietPlan);
 
     for (var i in dietPlan) {
-      print(i["id"]);
+      // print(i);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/providers/user_provider.dart';
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
+import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
 import 'package:flutter_application_1/screens/home_screen.dart';
@@ -37,13 +38,14 @@ class MyApp extends StatelessWidget {
           ? Provider.of<UserProvider>(context).user.role == 'user'
               ?  LandingScreen()
               : const AuthScreen()
-          : const AuthScreen(),
+          :  AuthScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         LandingScreen.routeName: (context) => LandingScreen(),
         FoodScreen.routeName: (context) => FoodScreen(),
         FoodList.routeName: (context) => FoodList(),
         WeeklyDietPlan.routeName: (context) => WeeklyDietPlan(),
+        DietPlanSelectorScreen.routeName: (context) => DietPlanSelectorScreen(),
       },
     );
   }
