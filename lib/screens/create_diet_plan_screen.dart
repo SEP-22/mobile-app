@@ -100,7 +100,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
         var t4 = e.indexOf(",", t3 + 1);
         b.add([
           e.substring(e.indexOf("'") + 1, t1 - 1),
-          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t1 + 3, e.indexOf("kcal") + 4),
           e.substring(t2 + 3, e.indexOf("g") + 1),
           e.substring(t3 + 3, t4 - 1),
           e.substring(t4 + 3, e.lastIndexOf("'")),
@@ -115,7 +115,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
         var t4 = e.indexOf(",", t3 + 1);
         l.add([
           e.substring(e.indexOf("'") + 1, t1 - 1),
-          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t1 + 3, e.indexOf("kcal") + 4),
           e.substring(t2 + 3, e.indexOf("g") + 1),
           e.substring(t3 + 3, t4 - 1),
           e.substring(t4 + 3, e.lastIndexOf("'")),
@@ -130,7 +130,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
         var t4 = e.indexOf(",", t3 + 1);
         d.add([
           e.substring(e.indexOf("'") + 1, t1 - 1),
-          e.substring(t1 + 3, e.indexOf("cal") + 3),
+          e.substring(t1 + 3, e.indexOf("kcal") + 4),
           e.substring(t2 + 3, e.indexOf("g") + 1),
           e.substring(t3 + 3, t4 - 1),
           e.substring(t4 + 3, e.lastIndexOf("'")),
