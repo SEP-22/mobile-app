@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
@@ -57,6 +58,36 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     //print(data);
   }
 
+  void activateDietPlan() async {
+    Map data = {
+      'user_Id': "6360cf9f0ebc552ba5863f87",
+      "activePlan_Id": passedArgs['planId']
+    };
+    bool response = await changeActiveDietPlan(data);
+    if (response) {
+      print("Activate Yes ${passedArgs['planId']}");
+      Navigator.pop(context);
+      Navigator.pop(context);
+      await Navigator.of(context).push(
+          new MaterialPageRoute(builder: (context) => DietPlanListScreen()));
+    } else {
+      print(response);
+    }
+  }
+
+  void deletePlan() async {
+    bool response = await deleteDietPlan(passedArgs['planId']);
+    if (response) {
+      print("Delete Yes ${passedArgs['planId']}");
+      Navigator.pop(context);
+      Navigator.pop(context);
+      await Navigator.of(context).push(
+          new MaterialPageRoute(builder: (context) => DietPlanListScreen()));
+    } else {
+      print(response);
+    }
+  }
+
   // @override
   // void initState() {
   //   //getData();
@@ -77,10 +108,90 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: Text(passedArgs['name']),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
+          title: passedArgs['status']
+              ? Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(passedArgs['name']),
+                        Icon(
+                          Icons.run_circle_outlined,
+                          color: Colors.amber,
+                        )
+                      ]),
+                )
+              : Text(passedArgs['name']),
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          actions: passedArgs['status']
+              ? [
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.pinkAccent[100]),
+                    child: PopupMenuButton<int>(
+                        itemBuilder: (context) => [
+                              PopupMenuItem<int>(
+                                value: 1,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Delete"),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.pinkAccent,
+                                      )
+                                    ]),
+                              ),
+                            ],
+                        onSelected: ((item) => SelectedItem(context, item))),
+                  ),
+                ]
+              : [
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Colors.pinkAccent[100]),
+                    child: PopupMenuButton<int>(
+                        itemBuilder: (context) => [
+                              PopupMenuItem<int>(
+                                value: 0,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Activate"),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(
+                                        Icons.thumb_up,
+                                        color: Colors.green[400],
+                                      )
+                                    ]),
+                              ),
+                              PopupMenuDivider(),
+                              PopupMenuItem<int>(
+                                  value: 1,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Delete"),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.pinkAccent,
+                                        )
+                                      ])),
+                            ],
+                        onSelected: ((item) => SelectedItem(context, item))),
+                  ),
+                ]),
       body: SingleChildScrollView(
         child: Container(
           //width: double.infinity,
@@ -194,5 +305,67 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
         ),
       ),
     );
+  }
+
+  SelectedItem(BuildContext context, item) {
+    switch (item) {
+      case 0:
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Activate Diet Plan'),
+                  content: Text('Do you want to make this diet plan active?'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          print("Activate No ${passedArgs['planId']}");
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(color: Colors.pinkAccent),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          //setState(() {});
+                          activateDietPlan();
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(color: Colors.green[400]),
+                        ))
+                  ],
+                ));
+        break;
+      case 1:
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Delete Diet Plan'),
+                  content: Text(
+                      'Are you sure you want to delete this diet plan? This action is irreversible and the associated shopping list will also get deleted!!'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          print("Delete No ${passedArgs['planId']}");
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(color: Colors.pinkAccent),
+                        )),
+                    TextButton(
+                        onPressed: () async {
+                          deletePlan();
+                          //setState(() {});
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(color: Colors.green[400]),
+                        ))
+                  ],
+                ));
+        break;
+    }
   }
 }

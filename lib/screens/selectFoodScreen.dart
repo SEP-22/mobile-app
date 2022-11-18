@@ -9,6 +9,7 @@ import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import '../const.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -42,7 +43,7 @@ class _FoodScreenState extends State<FoodScreen> {
     List<Widget> temp_Sugar = [];
 
     var response =
-        await api_service.fetchGet("http://10.0.2.2:4000/food/foodbycategory");
+        await api_service.fetchGet("${uri}food/foodbycategory");
     print("fff");
     var data = json.decode(response.body);
     print(data);

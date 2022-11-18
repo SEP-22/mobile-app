@@ -45,17 +45,23 @@ class _CompleteFoodItemState extends State<CompleteFoodItem> {
                       image: NetworkImage(widget.img), fit: BoxFit.contain)),
             ),
             Text(
-              widget.name,
+              widget.name.length > 15
+                  ? "${widget.name.substring(0, 14)}..."
+                  : widget.name,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             ),
             Text(
-              widget.calorie,
+              widget.calorie.length > 15
+                  ? "${widget.calorie.substring(0, 14)}..."
+                  : widget.calorie,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             ),
             Text(
-              widget.amount,
+              widget.amount.length > 15
+                  ? "${widget.amount.substring(0, 14)}..."
+                  : widget.amount,
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Varela', fontSize: 15),
             )

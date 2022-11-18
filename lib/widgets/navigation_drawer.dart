@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/reminders_page.dart';
@@ -144,20 +145,20 @@ class NavDrawer extends StatelessWidget {
                   builder: (context) => DietPlanListScreen()));
             },
           ),
-          // ListTile(
-          //   title: Text(
-          //     items[2],
-          //     style: const TextStyle(
-          //       color: Colors.black,
-          //       fontSize: 20,
-          //     ),
-          //   ),
-          //   leading: icons[2],
-          //   onTap: () {
-          //     Navigator.of(context).pushReplacement(
-          //         MaterialPageRoute(builder: (context) => ()));
-          //   },
-          // ),
+          ListTile(
+            title: Text(
+              items[2],
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            leading: icons[2],
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => HomeScreen()));
+            },
+          ),
           ListTile(
             title: Text(
               items[3],

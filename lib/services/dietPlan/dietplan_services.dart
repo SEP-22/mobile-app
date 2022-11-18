@@ -54,3 +54,25 @@ Future<Object> getDietPlanById(String id) async {
     return "Something Went Wrong";
   }
 }
+
+Future<bool> changeActiveDietPlan(data) async {
+  var response =
+      await api_service.fetchPost("${uri}user/updateactiveplan", data);
+  if (response.statusCode == 200) {
+    print("Active plan changed");
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> deleteDietPlan(dietPlanId) async {
+  var response = await api_service
+      .fetchDelete("${uri}dietPlan/deleteDietPlan/$dietPlanId");
+  if (response.statusCode == 200) {
+    print("dietPlan deleted");
+    return true;
+  } else {
+    return false;
+  }
+}
