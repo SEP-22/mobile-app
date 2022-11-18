@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
+import 'package:flutter_application_1/widgets/profile_detail.dart';
 import 'dart:convert';
 import '../const.dart';
 
@@ -13,8 +14,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List<String> profileDetails = ["","","","",""];
-  String id = "6335d3887e7aaea82d5e3654";
+  List<String> profileDetails = ["", "", "", "", ""];
+  String id = "6360cf9f0ebc552ba5863f87";
+  bool isObscure = true;
 
   @override
   void initState() {
@@ -25,8 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> getProfileDetails() async {
     List<String> temp_profile_details = [];
 
-    var response =
-        await api_service.fetchGet("${uri}user/profileDetails/6360cf9f0ebc552ba5863f87");
+    var response = await api_service.fetchGet("${uri}user/profileDetails/$id");
     print("Im here");
     var data = json.decode(response.body);
     temp_profile_details.add(data["_id"]);
@@ -43,23 +44,15 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
         title: const Text("My Profile"),
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
       drawer: const NavDrawer(),
-      body: Container(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 600,
           child: ListView(
             children: [
               const SizedBox(
@@ -69,8 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Stack(
                   children: [
                     Container(
-                      width: 150,
-                      height: 150,
+                      width: 130,
+                      height: 130,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
@@ -80,51 +73,210 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 2,
-                      right: 2,
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xfff178b6),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              buildTextField("Name", profileDetails[1]),
-              buildTextField("Email", profileDetails[2]),
-              buildTextField("Phone Number", profileDetails[4]),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  "Name",
+                  style: TextStyle(color: Colors.blueGrey, fontSize: 15),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(children: [
+                        Text(
+                          profileDetails[1],
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ]),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.pinkAccent,
+                          )),
+                    ]),
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  "Email",
+                  style: TextStyle(color: Colors.blueGrey, fontSize: 15),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(children: [
+                        Text(
+                          profileDetails[2],
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ]),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.pinkAccent,
+                          )),
+                    ]),
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  "Phone",
+                  style: TextStyle(color: Colors.blueGrey, fontSize: 15),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(children: [
+                        Text(
+                          profileDetails[4],
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ]),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.pinkAccent,
+                          )),
+                    ]),
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              // const Padding(
+              //   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              //   child: Text(
+              //     "Password",
+              //     style: TextStyle(color: Colors.blueGrey, fontSize: 15),
+              //     textAlign: TextAlign.left,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 5,
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              //   child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Column(children: [
+              //           Text(
+              //             isObscure
+              //                 ? profileDetails[4].replaceAll(RegExp(r"."), "*")
+              //                 : profileDetails[4],
+              //             style: const TextStyle(
+              //                 color: Colors.black, fontSize: 20),
+              //             textAlign: TextAlign.left,
+              //           ),
+              //         ]),
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: isObscure
+              //               ? [
+              //                   IconButton(
+              //                       onPressed: () {
+              //                         setState(() {
+              //                           isObscure = false;
+              //                         });
+              //                         print(isObscure);
+              //                       },
+              //                       icon: const Icon(
+              //                         Icons.visibility_off,
+              //                         color: Colors.grey,
+              //                       )),
+              //                   IconButton(
+              //                       onPressed: () {},
+              //                       icon: const Icon(
+              //                         Icons.edit,
+              //                         color: Colors.pinkAccent,
+              //                       )),
+              //                 ]
+              //               : [
+              //                   IconButton(
+              //                       onPressed: () {
+              //                         setState(() {
+              //                           isObscure = true;
+              //                         });
+              //                         print(isObscure);
+              //                       },
+              //                       icon: const Icon(
+              //                         Icons.visibility_sharp,
+              //                         color: Colors.grey,
+              //                       )),
+              //                   IconButton(
+              //                       onPressed: () {},
+              //                       icon: const Icon(
+              //                         Icons.edit,
+              //                         color: Colors.pinkAccent,
+              //                       )),
+              //                 ],
+              //         ),
+              //       ]),
+              // ),
+              // const Divider(
+              //   color: Colors.grey,
+              // ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Center(
+                  child: ElevatedButton.icon(
+                      label: Text("Edit password"),
+                      icon: Icon(Icons.edit),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.pinkAccent),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.fromLTRB(15, 10, 15, 10)),
+                          textStyle: MaterialStateProperty.all(
+                              TextStyle(fontSize: 15)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))))),
+                ),
+              ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildTextField(String labelText, String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 35),
-      child: TextField(
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(bottom: 3),
-          labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: placeholder,
-          hintStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         ),
       ),
