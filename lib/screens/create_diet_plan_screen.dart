@@ -60,7 +60,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   Future<void> submitPreferedFood(String id) async {
     var response = await api_service.fetchPost(
-        "${uri}user/preferedfoods",
+        "${uri}/user/preferedfoods",
         {"user_Id": id, "foods": seletedFood});
     var data = json.decode(response.body);
     // print(data);
@@ -69,7 +69,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   Future<void> generateDietPlan(String id) async {
     print("rrr");
     var response = await api_service.fetchPost(
-        "${uri}dietPlan/generatedietplan", {"dietPlan_Id": id});
+        "${uri}/dietPlan/generatedietplan", {"dietPlan_Id": id});
     var data1 = json.decode(response.body);
 
     // print(data1["message"]);
@@ -143,6 +143,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
       dietPlan.add(obj);
     }
 
+    print(dietPlan[0]);
+
     Navigator.of(context)
         .pushNamed(DietPlanSelectorScreen.routeName, arguments: dietPlan);
 
@@ -153,7 +155,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
   Future<void> submitData(String id) async {
     var response =
-        await api_service.fetchPost("${uri}dietPlan/quiz", {
+        await api_service.fetchPost("${uri}/dietPlan/quiz", {
       "user_Id": id,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),

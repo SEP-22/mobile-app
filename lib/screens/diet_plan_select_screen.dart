@@ -1,13 +1,21 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/const.dart';
 import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/diet_plan_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
 import 'package:http/http.dart';
+import 'package:flutter_application_1/services/api_service.dart' as api_service;
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class DietPlanSelectorScreen extends StatefulWidget {
   //const DietPlanSelectorScreen({super.key});
@@ -19,6 +27,15 @@ class DietPlanSelectorScreen extends StatefulWidget {
 
 class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
   List<dynamic> passedArgs = [];
+  List<bool> selectedDietPlans = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
   //List of week days
   List<String> weekdays = [
     "Diet Plan 1",
@@ -36,48 +53,53 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
   bool loading = true;
   String id = "";
 
-  // void getData() async {
-  //   //var temp_dietPlanDetails = new Map();
-  //   //print(passedArgs['planId']);
-  //   var response = await getDietPlanById(passedArgs['planId']);
-  //   if (response is String) {
-  //     setState(() {
-  //       message = response;
-  //     });
-  //   }
-  //   if (response is Map) {
-  //     setState(() {
-  //       data = response;
-  //     });
-  //   }
+  Future<dynamic> saveDietPlans() async {
+    List output=[];
+    for (var element in passedArgs){
+      if(selectedDietPlans[passedArgs.indexOf(element)]){
+        output.add(element);
+      }
 
-  //   setState(() {
-  //     loading = false;
-  //   });
-  //   print("here");
-  //   //print(data);
-  // }
-
-  // @override
-  // void initState() {
-  //   //getData();
-  //   super.initState();
-  // }
+    }
+  
+    var response = await api_service.fetchPost("${uri}/dietPlan/savedietplan", {
+      "plans": output
+    });
+    var data = json.decode(response.body);
+    print(data);
+  }
 
   @override
   Widget build(BuildContext context) {
     passedArgs = ModalRoute.of(context)?.settings.arguments as List<dynamic>;
+    final user = context.watch<UserProvider>().user;
 
-    print(passedArgs);
-    // passedArgs = passedArgs.isNotEmpty
-    //     ? passedArgs
-    //     : ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
         title: Text("Select your diet plan"),
         centerTitle: true,
         backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: saveDietPlans,
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            selectedDietPlans[current] = !selectedDietPlans[current];
+          });
+          print(selectedDietPlans);
+        },
+        icon:
+            selectedDietPlans[current] ? const Icon(Icons.done_rounded) : null,
+        label: selectedDietPlans[current]
+            ? const Text('Selected')
+            : const Text('Select'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -194,6 +216,7 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
                             },
                             itemCount: passedArgs[current]["dinner"].length),
                       ),
+                      SizedBox(height: 65,)
                     ])
                   : Center(
                       child: Text(

@@ -43,7 +43,7 @@ class _FoodScreenState extends State<FoodScreen> {
     List<Widget> temp_Sugar = [];
 
     var response =
-        await api_service.fetchGet("${uri}food/foodbycategory");
+        await api_service.fetchGet("${uri}/food/foodbycategory");
     print("fff");
     var data = json.decode(response.body);
     print(data);
