@@ -34,6 +34,8 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   DateTime? _selectedDate;
   final heightController = TextEditingController();
   final weightController = TextEditingController();
+  final nameController = TextEditingController();
+
 
   List<String> seletedFood = [];
 
@@ -155,6 +157,7 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   Future<void> submitData(String id) async {
     var response = await api_service.fetchPost("${uri}dietPlan/quiz", {
       "user_Id": id,
+      "name": nameController.text,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
       "activity":
@@ -218,6 +221,44 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
           ),
           child: Column(
             children: [
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 50),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Diet Plan Name",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          decoration: const InputDecoration(hintText: "Name"),
+                          controller: nameController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.text,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 width: double.infinity,
                 child: Card(

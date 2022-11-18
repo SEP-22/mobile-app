@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/edit_food_select_screen.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
   DateTime? _selectedDate;
   final heightController = TextEditingController();
   final weightController = TextEditingController();
+  final nameController = TextEditingController();
   String? dietId;
 
   Map? currentUser = null;
@@ -160,6 +162,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
     var response = await api_service
         .fetchPost("${uri}dietPlan/updateactiveplan/" + dietId, {
       "user_Id": userid,
+      "name": nameController.text,
       "dob": _selectedDate!.toIso8601String(),
       "gender": _selectedGender!.toLowerCase(),
       "activity":
@@ -215,6 +218,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
         // _selectedDate  = DateFormat.yMd().parse(data["activeDietPlan"]["dob"]);
         heightController.text = data["activeDietPlan"]["height"].toString();
         weightController.text = data["activeDietPlan"]["weight"].toString();
+        nameController.text = data["activeDietPlan"]["name"].toString();
         _selectedDietIntention = data["activeDietPlan"]["intention"] == "loose"
             ? "Loose Weight"
             : data["activeDietPlan"]["intention"] == "maintain"
@@ -264,6 +268,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
+      drawer: const NavDrawer(),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -273,6 +278,44 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
           ),
           child: Column(
             children: [
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 50),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Diet Plan Name",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          decoration: const InputDecoration(hintText: "Name"),
+                          controller: nameController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.text,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 width: double.infinity,
                 child: Card(
