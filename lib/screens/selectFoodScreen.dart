@@ -46,7 +46,7 @@ class _FoodScreenState extends State<FoodScreen> {
     var data = json.decode(response.body);
     print(data);
 
-    for (var info in data["Vegetable"]) {
+    for (var info in data["Vegetables"]) {
       FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
       temp_Vegetables.add(temp);
     }

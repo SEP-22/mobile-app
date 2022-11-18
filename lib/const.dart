@@ -1,1 +1,1 @@
-String uri = 'http://192.168.8.102:4000/';
+String uri = 'https://eat-smart.onrender.com/';

@@ -35,13 +35,12 @@ class _FoodCategoryChartState extends State<FoodCategoryChart> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-            decoration: BoxDecoration(
+        decoration: BoxDecoration(
             color: Colors.white70,
             borderRadius: BorderRadius.circular(5),
             boxShadow: const [
@@ -62,69 +61,50 @@ class _FoodCategoryChartState extends State<FoodCategoryChart> {
                   color: Colors.black87,
                 )),
             AspectRatio(
-              aspectRatio: 16 / 9,
-              child: data.isNotEmpty
-                  ? DChartPie(
-                      data: data.map((e) {
-                        return {
-                          'domain': e['category'],
-                          'measure': e['percentage']
-                        };
-                      }).toList(),
-                      fillColor: (pieData, index) {
-                        switch (pieData['domain']) {
-                          case "Fruits and Vegetables":
-                            return Colors.amber[400];
-                          case "Starchy food":
-                            return Colors.indigo[400];
-                          case "Proteins":
-                            return Colors.lightBlue[400];
-                          case "Dairy and Fats":
-                            return Colors.lightGreen[400];
-                          default:
-                            return Colors.pink[400];
-                        }
-                      },
-                      labelPosition: PieLabelPosition.outside,
-                      labelColor: Colors.black,
-                      labelFontSize: 12,
-                      labelLineColor: Colors.black12,
-                      labelLineThickness: 2,
-                      labelLinelength: 10,
-                      labelPadding: 3,
-                      pieLabel: (Map<dynamic, dynamic> pieData, int? index) {
-                        switch (pieData['domain']) {
-                          case "Fruits and Vegetables":
-                            return ("Fruits and\nVegetables\n" +
-                                pieData['measure'].toString() +
-                                '%');
-                          case "Starchy food":
-                            return pieData['domain'] +
-                                '\n' +
-                                pieData['measure'].toString() +
-                                '%';
-                          case "Proteins":
-                            return pieData['domain'] +
-                                '\n' +
-                                pieData['measure'].toString() +
-                                '%';
-                          case "Dairy and Fats":
-                            return "Dairy and\nFats\n" +
-                                pieData['measure'].toString() +
-                                '%';
-                          default:
-                            return pieData['domain'] +
-                                '\n' +
-                                pieData['measure'].toString() +
-                                '%';
-                        }
-                      },
-                      showLabelLine: true,
-                      strokeWidth: 2,
-                    )
-                  : message == ""
+                aspectRatio: 16 / 9,
+                child: data.isNotEmpty
+                    ? DChartPie(
+                        data: data.map((e) {
+                          return {
+                            'domain': e['category'],
+                            'measure': e['percentage']
+                          };
+                        }).toList(),
+                        fillColor: (pieData, index) {
+                          switch (pieData['domain']) {
+                            case "Vegetables":
+                              return Colors.amber[400];
+                            case "Fruits":
+                              return Colors.deepOrange[400];
+                            case "Starchy food":
+                              return Colors.purple[300];
+                            case "Proteins":
+                              return Colors.lightBlue[400];
+                            case "Dairy":
+                              return Colors.lightGreen[400];
+                            default:
+                              return Colors.pink[400];
+                          }
+                        },
+                        labelPosition: PieLabelPosition.outside,
+                        labelColor: Colors.black,
+                        labelFontSize: 12,
+                        labelLineColor: Colors.black12,
+                        labelLineThickness: 2,
+                        labelLinelength: 10,
+                        labelPadding: 3,
+                        pieLabel: (Map<dynamic, dynamic> pieData, int? index) {
+                          return pieData['domain'] +
+                              '\n' +
+                              pieData['measure'].toString() +
+                              '%';
+                        },
+                        showLabelLine: true,
+                        strokeWidth: 1,
+                      )
+                    : message == ""
                         ? const Center(
-                            child: SpinKitSpinningLines (
+                            child: SpinKitSpinningLines(
                               color: Colors.blueGrey,
                               size: 50.0,
                             ),
@@ -139,8 +119,7 @@ class _FoodCategoryChartState extends State<FoodCategoryChart> {
                               letterSpacing: 2,
                               wordSpacing: 10,
                             ),
-                          ))
-            )
+                          )))
           ]),
         ),
       ),

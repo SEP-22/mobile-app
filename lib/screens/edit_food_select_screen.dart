@@ -20,11 +20,12 @@ class EditFoodScreen extends StatefulWidget {
 
 class _EditFoodScreenState extends State<EditFoodScreen> {
   List food = [];
-  List<Widget> Vegetables_Fruits = [];
+  List<Widget> Vegetables = [];
+  List<Widget> Fruits = [];
   List<Widget> StarchyFood = [];
   List<Widget> Proteins = [];
-  List<Widget> Dairy_Fat = [];
-  List<Widget> Sugar = [];
+  List<Widget> Dairy = [];
+  List<Widget> Fat_Sugar = [];
   int foodCategory = 1;
 
   @override
@@ -34,53 +35,55 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
   }
 
   Future<void> getFoods() async {
-    List<Widget> temp_Vegetables_Fruits = [];
+    List<Widget> temp_Vegetables = [];
+    List<Widget> temp_Fruits = [];
     List<Widget> temp_StarchyFood = [];
     List<Widget> temp_Proteins = [];
-    List<Widget> temp_Dairy_Fat = [];
-    List<Widget> temp_Sugar = [];
+    List<Widget> temp_Dairy = [];
+    List<Widget> temp_Fat_Sugar = [];
 
     var response = await api_service.fetchGet("${uri}food/foodbycategory");
     print("fff");
     var data = json.decode(response.body);
     print(data);
 
-    for (var info in data["Vegetables_Fruits"]) {
-      EditFoodItem temp =
-          EditFoodItem(info["_id"], info["name"], info["image"]);
-      temp_Vegetables_Fruits.add(temp);
+    for (var info in data["Vegetables"]) {
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      temp_Vegetables.add(temp);
+    }
+
+    for (var info in data["Fruits"]) {
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      temp_Fruits.add(temp);
     }
 
     for (var info in data["StarchyFood"]) {
-      EditFoodItem temp =
-          EditFoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
       temp_StarchyFood.add(temp);
     }
 
     for (var info in data["Proteins"]) {
-      EditFoodItem temp =
-          EditFoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
       temp_Proteins.add(temp);
     }
 
-    for (var info in data["Dairy_Fat"]) {
-      EditFoodItem temp =
-          EditFoodItem(info["_id"], info["name"], info["image"]);
-      temp_Dairy_Fat.add(temp);
+    for (var info in data["Dairy"]) {
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      temp_Dairy.add(temp);
     }
 
-    for (var info in data["Sugar"]) {
-      EditFoodItem temp =
-          EditFoodItem(info["_id"], info["name"], info["image"]);
-      temp_Sugar.add(temp);
+    for (var info in data["Fat_Sugar"]) {
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      temp_Fat_Sugar.add(temp);
     }
 
     setState(() {
-      Vegetables_Fruits = temp_Vegetables_Fruits;
+      Vegetables = temp_Vegetables;
+      Fruits = temp_Fruits;
       StarchyFood = temp_StarchyFood;
       Proteins = temp_Proteins;
-      Dairy_Fat = temp_Dairy_Fat;
-      Sugar = temp_Sugar;
+      Dairy = temp_Dairy;
+      Fat_Sugar = temp_Fat_Sugar;
     });
     print(data);
   }
@@ -112,53 +115,62 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
         label: const Text('Next'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Vegetables_Fruits.length > 0
-          ? foodCategory == 1
+      body: Vegetables.length > 0
+          ? foodCategory == 0
               ? GridView.count(
                   primary: false,
                   padding: const EdgeInsets.all(20),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   crossAxisCount: 2,
-                  children: Vegetables_Fruits,
+                  children: Vegetables,
                 )
-              : foodCategory == 2
+              : foodCategory == 1
                   ? GridView.count(
                       primary: false,
                       padding: const EdgeInsets.all(20),
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       crossAxisCount: 2,
-                      children: StarchyFood,
+                      children: Fruits,
                     )
-                  : foodCategory == 3
+                  : foodCategory == 2
                       ? GridView.count(
                           primary: false,
                           padding: const EdgeInsets.all(20),
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           crossAxisCount: 2,
-                          children: Proteins,
+                          children: StarchyFood,
                         )
-                      : foodCategory == 4
+                      : foodCategory == 3
                           ? GridView.count(
                               primary: false,
                               padding: const EdgeInsets.all(20),
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               crossAxisCount: 2,
-                              children: Dairy_Fat,
+                              children: Proteins,
                             )
-                          : foodCategory == 5
+                          : foodCategory == 4
                               ? GridView.count(
                                   primary: false,
                                   padding: const EdgeInsets.all(20),
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,
                                   crossAxisCount: 2,
-                                  children: Sugar,
+                                  children: Dairy,
                                 )
-                              : Loader()
+                              : foodCategory == 5
+                                  ? GridView.count(
+                                      primary: false,
+                                      padding: const EdgeInsets.all(20),
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      crossAxisCount: 2,
+                                      children: Fat_Sugar,
+                                    )
+                                  : Loader()
           : Loader(),
     );
   }

@@ -51,7 +51,7 @@ Future<Object> getFoodCategoryPercentage() async {
 
     List<Map> temp = [];
 
-    for (var i = 1; i < 6; i++) {
+    for (var i = 1; i < 7; i++) {
       temp.add({'category': d[i][0], 'percentage': d[i][1]});
     }
     return temp;
