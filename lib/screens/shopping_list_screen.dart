@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:flutter_application_1/widgets/food_item.dart';
+import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import '../const.dart';
 
 class ShoppingListScreen extends StatefulWidget {
@@ -116,6 +117,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
+      drawer: NavDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [

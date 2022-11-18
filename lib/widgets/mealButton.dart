@@ -26,7 +26,7 @@ class _MealNameContainerState extends State<MealNameContainer> {
                   spreadRadius: 3,
                   blurRadius: 5)
             ],
-            color: Colors.pinkAccent[100]),
+            color: Color(0xfff178b6)),
         child: Center(
           child: Text(
             widget.name,

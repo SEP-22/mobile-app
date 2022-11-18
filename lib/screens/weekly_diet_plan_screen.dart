@@ -185,7 +185,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                                         ),
                                         Icon(
                                           Icons.delete,
-                                          color: Colors.pinkAccent,
+                                          color: Color(0xfff178b6),
                                         )
                                       ])),
                             ],
@@ -244,7 +244,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                             width: 5,
                             height: 5,
                             decoration: const BoxDecoration(
-                              color: Colors.pinkAccent,
+                              color: Color(0xfff178b6),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -352,7 +352,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                         },
                         child: Text(
                           'No',
-                          style: TextStyle(color: Colors.pinkAccent),
+                          style: TextStyle(color: Color(0xfff178b6)),
                         )),
                     TextButton(
                         onPressed: () async {

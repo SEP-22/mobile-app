@@ -140,18 +140,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
     if (res == 'success') {
       setState(() {
-        breakfastTime = newTime;
-        breakfast = true;
+        lunchTime = newTime;
+        lunch = true;
       });
     } else {
       showSnackBar();
       return;
     }
-
-    setState(() {
-      lunchTime = newTime;
-      lunch = true;
-    });
 
     await notificationService.showDailyNotification(
         id: 1,
@@ -189,18 +184,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
     if (res == 'success') {
       setState(() {
-        breakfastTime = newTime;
-        breakfast = true;
+        dinnerTime = newTime;
+        dinner = true;
       });
     } else {
       showSnackBar();
       return;
     }
-
-    setState(() {
-      dinnerTime = newTime;
-      dinner = true;
-    });
 
     await notificationService.showDailyNotification(
         id: 2,

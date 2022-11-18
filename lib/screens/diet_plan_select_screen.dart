@@ -153,7 +153,7 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
                             width: 5,
                             height: 5,
                             decoration: const BoxDecoration(
-                              color: Colors.pinkAccent,
+                              color: Color(0xfff178b6),
                               shape: BoxShape.circle,
                             ),
                           ),

@@ -54,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       body: Container(
         child: GestureDetector(
           onTap: () {

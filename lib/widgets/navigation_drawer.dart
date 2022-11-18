@@ -5,6 +5,7 @@ import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/reminders_page.dart';
+import 'package:flutter_application_1/screens/shopping_list_screen.dart';
 import 'package:flutter_application_1/screens/stats_screen.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -16,9 +17,9 @@ class NavDrawer extends StatelessWidget {
     'Diet Plans',
     'Manage',
     'Reminders',
+    'Shopping List',
     'Explore',
     'Food List',
-    'Profile'
   ];
   static const List<Icon> icons = [
     Icon(
@@ -42,6 +43,11 @@ class NavDrawer extends StatelessWidget {
       size: 30.0,
     ),
     Icon(
+      Icons.receipt_long_outlined,
+      color: Colors.black87,
+      size: 30.0,
+    ),
+    Icon(
       Icons.tips_and_updates_outlined,
       color: Colors.black87,
       size: 30.0,
@@ -61,12 +67,14 @@ class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            buildHeader(context),
-            buildMenuItems(context),
-          ]),
+      child: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              buildHeader(context),
+              buildMenuItems(context),
+            ]),
+      ),
     );
   }
 
@@ -82,15 +90,17 @@ class NavDrawer extends StatelessWidget {
               top: MediaQuery.of(context).padding.top,
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
               child: Column(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 52,
                     backgroundImage: NetworkImage(
                         "https://img.freepik.com/premium-vector/african-american-woman-avatar-with-glasses-portrait-young-girl-vector-illustration-face_217290-363.jpg?w=2000"),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     name,
                     style: const TextStyle(
@@ -113,9 +123,9 @@ class NavDrawer extends StatelessWidget {
       );
 
   Widget buildMenuItems(BuildContext context) => Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Wrap(
-        runSpacing: 16,
+        runSpacing: 10,
         children: [
           ListTile(
             title: Text(
@@ -183,8 +193,8 @@ class NavDrawer extends StatelessWidget {
             ),
             leading: icons[4],
             onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => StatsScreen()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => ShoppingListScreen()));
             },
           ),
           ListTile(
@@ -196,6 +206,20 @@ class NavDrawer extends StatelessWidget {
               ),
             ),
             leading: icons[5],
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => StatsScreen()));
+            },
+          ),
+          ListTile(
+            title: Text(
+              items[6],
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            leading: icons[6],
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => FoodListScreen()));
