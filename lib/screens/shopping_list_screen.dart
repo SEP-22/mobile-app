@@ -94,9 +94,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 height: 5,
               ),
               Text(
-                food.amount.length > 10
-                    ? '${food.amount.substring(0, 10)} grams'
-                    : '${food.amount} grams',
+                double.parse(food.amount).round() > 1000
+                    ? '${double.parse(food.amount).round() / 1000} kg'
+                    : '${double.parse(food.amount).round()} g',
                 style: TextStyle(color: Colors.black, fontSize: 17),
               ),
             ],
