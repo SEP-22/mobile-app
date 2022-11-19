@@ -2,7 +2,11 @@ import 'package:flutter_application_1/providers/user_provider.dart';
 import 'package:flutter_application_1/screens/create_diet_plan_screen.dart';
 import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
+import 'package:flutter_application_1/screens/edit_email_screen.dart';
 import 'package:flutter_application_1/screens/edit_food_select_screen.dart';
+import 'package:flutter_application_1/screens/edit_name_screen.dart';
+import 'package:flutter_application_1/screens/edit_password_screen.dart';
+import 'package:flutter_application_1/screens/edit_phone_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
 import 'package:flutter_application_1/screens/manage_screen.dart.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
@@ -33,13 +37,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Eat Smart',
       theme: ThemeData(
-        primarySwatch:Colors.green,
+        primarySwatch: Colors.green,
       ),
-      home:  Provider.of<UserProvider>(context).user.token.isNotEmpty
+      home: Provider.of<UserProvider>(context).user.token.isNotEmpty
           ? Provider.of<UserProvider>(context).user.role == 'user'
-              ?  LandingScreen()
+              ? LandingScreen()
               : const AuthScreen()
-          :  AuthScreen(),
+          : AuthScreen(),
       routes: {
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         LandingScreen.routeName: (context) => LandingScreen(),
@@ -48,6 +52,10 @@ class MyApp extends StatelessWidget {
         WeeklyDietPlan.routeName: (context) => WeeklyDietPlan(),
         DietPlanSelectorScreen.routeName: (context) => DietPlanSelectorScreen(),
         EditFoodScreen.routeName: (context) => EditFoodScreen(),
+        EditName.routeName: (context) => EditName(),
+        EditPhone.routeName: (context) => EditPhone(),
+        EditEmail.routeName: (context) => EditEmail(),
+        EditPassword.routeName: (context) => EditPassword(),
       },
     );
   }
