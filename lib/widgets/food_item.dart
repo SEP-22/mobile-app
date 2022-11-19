@@ -7,7 +7,10 @@ class FoodItem extends StatefulWidget {
   late String id;
   late String title;
   late String img;
-  FoodItem(this.id, this.title, this.img);
+  late Function increaseFoodCount;
+  late Function decreaseFoodCount;
+  FoodItem(this.id, this.title, this.img, this.increaseFoodCount,
+      this.decreaseFoodCount);
 
   @override
   State<FoodItem> createState() => _FoodItemState();
@@ -46,10 +49,13 @@ class _FoodItemState extends State<FoodItem> {
             color: Theme.of(context).accentColor,
             onPressed: () {
               setState(() {
-                arg.selectedFood.contains(widget.id)
-                ? arg.removeFood(widget.id)
-                : arg.addFood(widget.id);
-                
+                if (arg.selectedFood.contains(widget.id)) {
+                  arg.removeFood(widget.id);
+                  widget.decreaseFoodCount();
+                } else {
+                  arg.addFood(widget.id);
+                  widget.increaseFoodCount();
+                }
               });
             },
           ),

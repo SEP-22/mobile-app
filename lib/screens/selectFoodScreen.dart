@@ -9,6 +9,7 @@ import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import '../const.dart';
+import '../constants/utils.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -26,11 +27,29 @@ class _FoodScreenState extends State<FoodScreen> {
   List<Widget> Dairy = [];
   List<Widget> Fat_Sugar = [];
   int foodCategory = 0;
+  List<int> numberOfFoodsSelected = [0, 0, 0, 0, 0, 0];
+  int numOfFoodShouldSelect = 4;
 
   @override
   void initState() {
     getFoods();
     super.initState();
+  }
+
+  void increaseFoodCount() {
+    setState(() {
+      numberOfFoodsSelected[foodCategory] =
+          numberOfFoodsSelected[foodCategory] + 1;
+    });
+    print(numberOfFoodsSelected);
+  }
+
+  void decreaseFoodCount() {
+    setState(() {
+      numberOfFoodsSelected[foodCategory] =
+          numberOfFoodsSelected[foodCategory] - 1;
+    });
+    print(numberOfFoodsSelected);
   }
 
   Future<void> getFoods() async {
@@ -47,32 +66,38 @@ class _FoodScreenState extends State<FoodScreen> {
     print(data);
 
     for (var info in data["Vegetables"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_Vegetables.add(temp);
     }
 
     for (var info in data["Fruits"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_Fruits.add(temp);
     }
 
     for (var info in data["StarchyFood"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_StarchyFood.add(temp);
     }
 
     for (var info in data["Proteins"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_Proteins.add(temp);
     }
 
     for (var info in data["Dairy"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_Dairy.add(temp);
     }
 
     for (var info in data["Fat_Sugar"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"],
+          increaseFoodCount, decreaseFoodCount);
       temp_Fat_Sugar.add(temp);
     }
 
@@ -112,18 +137,52 @@ class _FoodScreenState extends State<FoodScreen> {
           style: const TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          if (foodCategory == 5) {
-            Navigator.pop(context);
-          } else {
-            setState(() {
-              foodCategory++;
-            });
-          }
-        },
-        icon: const Icon(Icons.arrow_circle_right),
-        label: const Text('Next'),
+      floatingActionButton: Stack(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 31),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton.extended(
+                heroTag: "back",
+                onPressed: () {
+                  if (foodCategory == 0) {
+                    Navigator.pop(context);
+                  } else {
+                    setState(() {
+                      foodCategory--;
+                    });
+                  }
+                },
+                icon: const Icon(Icons.arrow_circle_left),
+                label: const Text('Back'),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton.extended(
+              heroTag: "next",
+              onPressed: () {
+                if (foodCategory == 5) {
+                  Navigator.pop(context);
+                } else {
+                  if (numberOfFoodsSelected[foodCategory] <
+                      numOfFoodShouldSelect) {
+                    showSnackBar(context,
+                        "You should select atleast ${numOfFoodShouldSelect} foods.");
+                  } else {
+                    setState(() {
+                      foodCategory++;
+                    });
+                  }
+                }
+              },
+              icon: const Icon(Icons.arrow_circle_right),
+              label: const Text('Next'),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Vegetables.isNotEmpty
