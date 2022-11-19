@@ -5,6 +5,8 @@ import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'package:flutter_application_1/widgets/profile_detail.dart';
 import 'dart:convert';
 import '../const.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,29 +17,29 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   List<String> profileDetails = ["", "", "", "", ""];
-  String id = "6360cf9f0ebc552ba5863f87";
   bool isObscure = true;
   TextEditingController controller = TextEditingController();
   String errorMessage = "";
   bool isError = false;
+  bool? currentUser = false;
 
-  @override
-  void initState() {
-    getProfileDetails();
-    super.initState();
-  }
-
-  Future<void> getProfileDetails() async {
+  Future<void> getProfileDetails(String userId) async {
     List<String> temp_profile_details = [];
 
-    var response = await api_service.fetchGet("${uri}user/profileDetails/$id");
+    var response =
+        await api_service.fetchGet("${uri}user/profileDetails/$userId");
     print("Im here");
     var data = json.decode(response.body);
     temp_profile_details.add(data["_id"]);
     temp_profile_details.add(data["name"]);
     temp_profile_details.add(data["email"]);
     temp_profile_details.add(data["password"]);
-    temp_profile_details.add(data["phone"]);
+    try {
+      temp_profile_details.add(data["phone"]);
+    } catch (error) {
+      temp_profile_details.add("None");
+    }
+
     setState(() {
       profileDetails = temp_profile_details;
     });
@@ -86,6 +88,13 @@ class _ProfilePageState extends State<ProfilePage> {
   // }
 
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getProfileDetails(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

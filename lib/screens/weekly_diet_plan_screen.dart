@@ -8,6 +8,8 @@ import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class WeeklyDietPlan extends StatefulWidget {
   //const WeeklyDietPlan({super.key});
@@ -37,8 +39,6 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
   String id = "";
 
   void getData() async {
-    //var temp_dietPlanDetails = new Map();
-    //print(passedArgs['planId']);
     var response = await getDietPlanById(passedArgs['planId']);
     if (response is String) {
       setState(() {
@@ -55,14 +55,10 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
       loading = false;
     });
     print("here");
-    //print(data);
   }
 
-  void activateDietPlan() async {
-    Map data = {
-      'user_Id': "6360cf9f0ebc552ba5863f87",
-      "activePlan_Id": passedArgs['planId']
-    };
+  void activateDietPlan(String userId) async {
+    Map data = {'user_Id': userId, "activePlan_Id": passedArgs['planId']};
     bool response = await changeActiveDietPlan(data);
     if (response) {
       print("Activate Yes ${passedArgs['planId']}");
@@ -88,23 +84,13 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   //getData();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
     if (passedArgs.isEmpty) {
       passedArgs = ModalRoute.of(context)?.settings.arguments as Map;
       getData();
-    } else {
-      //getData();
     }
-    // passedArgs = passedArgs.isNotEmpty
-    //     ? passedArgs
-    //     : ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
@@ -147,7 +133,8 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                                     ]),
                               ),
                             ],
-                        onSelected: ((item) => SelectedItem(context, item))),
+                        onSelected: ((item) =>
+                            SelectedItem(context, item, user.id))),
                   ),
                 ]
               : [
@@ -189,7 +176,8 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                                         )
                                       ])),
                             ],
-                        onSelected: ((item) => SelectedItem(context, item))),
+                        onSelected: ((item) =>
+                            SelectedItem(context, item, user.id))),
                   ),
                 ]),
       body: SingleChildScrollView(
@@ -309,7 +297,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
     );
   }
 
-  SelectedItem(BuildContext context, item) {
+  SelectedItem(BuildContext context, item, String id) {
     switch (item) {
       case 0:
         showDialog(
@@ -330,7 +318,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                     TextButton(
                         onPressed: () {
                           //setState(() {});
-                          activateDietPlan();
+                          activateDietPlan(id);
                         },
                         child: Text(
                           'Yes',

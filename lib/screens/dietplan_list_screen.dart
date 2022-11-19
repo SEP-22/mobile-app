@@ -5,6 +5,8 @@ import 'package:flutter_application_1/services/dietPlan/dietplan_list_services.d
 import 'package:flutter_application_1/widgets/diet_list_button.dart';
 import 'package:flutter_application_1/widgets/mealButton.dart';
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class DietPlanListScreen extends StatefulWidget {
   const DietPlanListScreen({super.key});
@@ -14,22 +16,14 @@ class DietPlanListScreen extends StatefulWidget {
 }
 
 class _DietPlanListScreenState extends State<DietPlanListScreen> {
-  List<String> dietList = ["1", "2", "3"];
-  Map dietMap = {
-    '1': ["Granpa's List", true],
-    '2': ["Mom's list", false],
-    '3': ["My list", false],
-    '4': ["My second list", false],
-    '5': ["Temp list", false]
-  };
-
   String message = "Loading...";
   Map data = {};
   bool loading = true;
   List<String> dietIdList = [];
+  bool? currentUser = false;
 
-  void getData() async {
-    var response = await getAllPlanNamesAndStateByUserId();
+  void getData(String userId) async {
+    var response = await getAllPlanNamesAndStateByUserId(userId);
     if (response is String) {
       setState(() {
         message = response;
@@ -48,13 +42,14 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
   }
 
   @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getData(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.lightGreen[100],
       appBar: AppBar(
