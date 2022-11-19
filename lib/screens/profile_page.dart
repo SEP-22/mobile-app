@@ -17,6 +17,9 @@ class _ProfilePageState extends State<ProfilePage> {
   List<String> profileDetails = ["", "", "", "", ""];
   String id = "6360cf9f0ebc552ba5863f87";
   bool isObscure = true;
+  TextEditingController controller = TextEditingController();
+  String errorMessage = "";
+  bool isError = false;
 
   @override
   void initState() {
@@ -39,6 +42,48 @@ class _ProfilePageState extends State<ProfilePage> {
       profileDetails = temp_profile_details;
     });
   }
+
+  // Future<dynamic> createAlertDialog(BuildContext context) {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text("Edit Name"),
+  //           content: TextField(
+  //             controller: controller,
+  //           ),
+  //           actions: <Widget>[
+  //             ElevatedButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: Text("Cancel"),
+  //                 style: ButtonStyle(
+  //                     backgroundColor:
+  //                         MaterialStateProperty.all(Colors.pinkAccent),
+  //                     padding: MaterialStateProperty.all(
+  //                         const EdgeInsets.fromLTRB(15, 10, 15, 10)),
+  //                     textStyle:
+  //                         MaterialStateProperty.all(TextStyle(fontSize: 15)),
+  //                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(20))))),
+  //             ElevatedButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop(controller.text.toString());
+  //                 },
+  //                 child: Text("Submit"),
+  //                 style: ButtonStyle(
+  //                     backgroundColor: MaterialStateProperty.all(Colors.green),
+  //                     padding: MaterialStateProperty.all(
+  //                         const EdgeInsets.fromLTRB(15, 10, 15, 10)),
+  //                     textStyle:
+  //                         MaterialStateProperty.all(TextStyle(fontSize: 15)),
+  //                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(20))))),
+  //           ],
+  //         );
+  //       });
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +149,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ]),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/editname',
+                                arguments: {'userId': profileDetails[0]});
+                          },
                           icon: const Icon(
                             Icons.edit,
                             color: Colors.pinkAccent,
@@ -139,7 +187,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ]),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/editemail',
+                                arguments: {'userId': profileDetails[0]});
+                          },
                           icon: const Icon(
                             Icons.edit,
                             color: Colors.pinkAccent,
@@ -174,7 +225,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ]),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/editphone',
+                                arguments: {'userId': profileDetails[0]});
+                          },
                           icon: const Icon(
                             Icons.edit,
                             color: Colors.pinkAccent,
@@ -263,7 +317,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ElevatedButton.icon(
                       label: Text("Edit password"),
                       icon: Icon(Icons.edit),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/editPassword',
+                            arguments: {'userId': profileDetails[0]});
+                      },
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.pinkAccent),

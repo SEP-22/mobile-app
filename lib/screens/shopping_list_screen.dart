@@ -15,24 +15,13 @@ class ShoppingListScreen extends StatefulWidget {
 }
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
+  String _id = "6360cf9f0ebc552ba5863f87";
   List completeShoppingList = [];
   List<String> shoppingListNames = [];
   String? valueChosen;
   List currentShoppingList = [];
   var slMap = new Map();
-  //food template
-  //List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
 
-  List<Food> foods = [
-    Food("Potato", "500 g", "200 cal",
-        "https://nix-tag-images.s3.amazonaws.com/752_highres.jpg"),
-    Food("Apple", "200 g", "210 cal",
-        "https://nix-tag-images.s3.amazonaws.com/384_highres.jpg"),
-    // Food("Lettuce", "450 g", "200 cal",
-    //     "https://i.pinimg.com/originals/58/42/10/584210d3e40ed884f21ae7306437a2ec.jpg"),
-    // Food("Cauliflower", "120 g", "200 cal",
-    //     "https://img.freepik.com/premium-photo/fresh-cauliflower-isolated-white-background_33736-2684.jpg?w=2000")
-  ];
   @override
   void initState() {
     getShoppingList();
@@ -44,8 +33,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     var temp_map = new Map();
     //food template data
 
-    var response = await api_service.fetchGet(
-        "${uri}shoppingList/getShoppingListsFromUserId/6360cf9f0ebc552ba5863f87");
+    var response = await api_service
+        .fetchGet("${uri}shoppingList/getShoppingListsFromUserId/$_id");
     print("shoppingList taken");
     var data = json.decode(response.body);
     for (var shoppingList in data) {
@@ -57,55 +46,107 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
 
     setState(() {
       shoppingListNames = temp_shoppingListNames;
-      //shoppingListValues = temp_shoppingListValues;
       slMap = temp_map;
     });
   }
 
   Widget foodTemplate(food) {
-    return Card(
-      margin: EdgeInsets.all(20),
-      child: Row(children: [
-        Center(
-          child: Stack(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+      child: Container(
+        height: 120,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 3,
+                  blurRadius: 5)
+            ],
+            color: Colors.white),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          SizedBox(
+            width: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Container(
+              height: 90,
+              width: 90,
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: NetworkImage(food.image))),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(food.image),
-                  ),
-                ),
+              Text(
+                food.name.length > 14
+                    ? '${food.name.substring(0, 13)}..'
+                    : food.name,
+                style: TextStyle(color: Colors.green, fontSize: 22),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                food.amount.length > 10
+                    ? '${food.amount.substring(0, 10)} grams'
+                    : '${food.amount} grams',
+                style: TextStyle(color: Colors.black, fontSize: 17),
               ),
             ],
-          ),
-        ),
-        Column(
-          children: [
-            Text(
-              food.name,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.green,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              food.amount,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ]),
+          )
+        ]),
+      ),
     );
+    // Card(
+    //   margin: EdgeInsets.all(20),
+    //   child: Row(children: [
+    //     Center(
+    //       child: Stack(
+    //         children: [
+    //           Container(
+    //             width: 70,
+    //             height: 70,
+    //             decoration: BoxDecoration(
+    //               shape: BoxShape.rectangle,
+    //               image: DecorationImage(
+    //                 fit: BoxFit.cover,
+    //                 image: NetworkImage(food.image),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //     Column(
+    //       children: [
+    //         Text(
+    //           food.name,
+    //           style: TextStyle(
+    //             fontSize: 20,
+    //             color: Colors.green,
+    //           ),
+    //         ),
+    //         SizedBox(
+    //           height: 10,
+    //         ),
+    //         Text(
+    //           food.amount,
+    //           style: TextStyle(
+    //             fontSize: 18,
+    //             color: Colors.black,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ]),
+    // );
   }
 
   @override
@@ -152,7 +193,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               children: currentShoppingList
                   // .map((e) => FoodItem(e[0], e[3], e[2]))
                   // .toList(),
-                  .map((e) => foodTemplate(Food(e[0], '${e[1]}', "200", e[3])))
+                  .map((e) =>
+                      foodTemplate(Food(e[0], '${e[1]}', '${e[2]}', e[3])))
                   .toList(),
             ),
           ],

@@ -25,7 +25,7 @@ class _CompleteFoodItemState extends State<CompleteFoodItem> {
     return Padding(
       padding: EdgeInsets.all(5),
       child: Container(
-        width: 150,
+        width: 160,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
@@ -49,7 +49,10 @@ class _CompleteFoodItemState extends State<CompleteFoodItem> {
                   ? "${widget.name.substring(0, 14)}..."
                   : widget.name,
               style: TextStyle(
-                  color: Colors.black, fontFamily: 'Varela', fontSize: 15),
+                  color: Colors.green,
+                  fontFamily: 'Varela',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
             ),
             Text(
               widget.calorie.length > 15

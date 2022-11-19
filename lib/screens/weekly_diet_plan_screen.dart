@@ -127,7 +127,7 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
               ? [
                   Theme(
                     data: Theme.of(context)
-                        .copyWith(dividerColor: Colors.pinkAccent[100]),
+                        .copyWith(dividerColor: Colors.pink[100]),
                     child: PopupMenuButton<int>(
                         itemBuilder: (context) => [
                               PopupMenuItem<int>(
@@ -217,11 +217,11 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
                             margin: const EdgeInsets.all(10),
-                            width: (MediaQuery.of(context).size.width - 70) / 3,
+                            width: (MediaQuery.of(context).size.width - 50) / 3,
                             height: 45,
                             decoration: BoxDecoration(
                               color: current == index
-                                  ? Colors.white70
+                                  ? Colors.pink[100]
                                   : Colors.white54,
                               borderRadius: current == index
                                   ? BorderRadius.circular(15)
@@ -234,6 +234,8 @@ class _WeeklyDietPlanState extends State<WeeklyDietPlan> {
                             child: Center(
                               child: Text(
                                 weekdays[index],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                             ),
                           ),
