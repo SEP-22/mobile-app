@@ -73,6 +73,9 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      if (jsonDecode(res.body)["user"] == null) {
+        showSnackBar(context, jsonDecode(res.body)["message"]);
+      }
       httpErrorHandle(
         response: res,
         context: context,

@@ -13,9 +13,11 @@ import '../providers/user_provider.dart';
 import '../const.dart';
 
 class SelectFoodArguments1 {
-  SelectFoodArguments1({required this.addFood, required this.selectedFood});
+  SelectFoodArguments1({required this.addFood,  required this.removeFood,required this.selectedFood});
 
   final Function addFood;
+  final Function removeFood;
+
   final List<String> selectedFood;
 }
 
@@ -45,6 +47,11 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
 
   void addFood(String id) {
     seletedFood.add(id);
+    print(seletedFood);
+  }
+
+  void removeFood(String id) {
+    seletedFood.remove(id);
     print(seletedFood);
   }
 
@@ -719,7 +726,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
                           Navigator.of(context).pushNamed(
                               EditFoodScreen.routeName,
                               arguments: SelectFoodArguments1(
-                                  addFood: addFood, selectedFood: seletedFood));
+                                  addFood: addFood,removeFood: removeFood, selectedFood: seletedFood));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -48,32 +48,32 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
     print(data);
 
     for (var info in data["Vegetables"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Vegetables.add(temp);
     }
 
     for (var info in data["Fruits"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Fruits.add(temp);
     }
 
     for (var info in data["StarchyFood"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_StarchyFood.add(temp);
     }
 
     for (var info in data["Proteins"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Proteins.add(temp);
     }
 
     for (var info in data["Dairy"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Dairy.add(temp);
     }
 
     for (var info in data["Fat_Sugar"]) {
-      FoodItem temp = FoodItem(info["_id"], info["name"], info["image"]);
+      EditFoodItem temp = EditFoodItem(info["_id"], info["name"], info["image"]);
       temp_Fat_Sugar.add(temp);
     }
 

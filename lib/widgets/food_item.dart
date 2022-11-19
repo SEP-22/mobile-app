@@ -46,7 +46,10 @@ class _FoodItemState extends State<FoodItem> {
             color: Theme.of(context).accentColor,
             onPressed: () {
               setState(() {
-                arg.addFood(widget.id);
+                arg.selectedFood.contains(widget.id)
+                ? arg.removeFood(widget.id)
+                : arg.addFood(widget.id);
+                
               });
             },
           ),
