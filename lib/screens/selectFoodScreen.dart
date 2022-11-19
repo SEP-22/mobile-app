@@ -28,7 +28,7 @@ class _FoodScreenState extends State<FoodScreen> {
   List<Widget> Fat_Sugar = [];
   int foodCategory = 0;
   List<int> numberOfFoodsSelected = [0, 0, 0, 0, 0, 0];
-  int numOfFoodShouldSelect = 4;
+  int numOfFoodShouldSelect = 6;
 
   @override
   void initState() {
