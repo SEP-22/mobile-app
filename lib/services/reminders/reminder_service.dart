@@ -6,9 +6,9 @@ import '../../const.dart';
 import 'Reminder.dart';
 
 
-Future<Object> getReminder(String id) async {
+Future<Object> getReminder(String userid) async {
   var response = await api_service.fetchPost("${uri}reminder/getreminder", {
-    "user_Id": id,
+    "user_Id": userid,
   });
 
   if (response.statusCode == 200) {
@@ -41,10 +41,10 @@ Future<Object> getReminder(String id) async {
       lunchOn: d["lunchOn"],
       dinnerOn: d["dinnerOn"],
     );
-
+    print(r);
     return r;
   } else {
-    print(response);
+    print(response.body);
     return 'Something went Wrong';
   }
 }
@@ -60,7 +60,7 @@ Future<String> updateBreakfast(String id, TimeOfDay time, bool br) async {
   if (response.statusCode == 200) {
     return 'success';
   } else {
-    print(response);
+    print(response.body);
     return 'Something went Wrong';
   }
 }

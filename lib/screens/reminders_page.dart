@@ -30,9 +30,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
   bool dinner = false;
   TimeOfDay dinnerTime = const TimeOfDay(hour: 00, minute: 00);
 
-  void getData(String id) async {
+  void getData(String userid) async {
     print("hello");
-    var response = await getReminder(id);
+    var response = await getReminder(userid);
     if (response is String) {
       setState(() {
         message = response;
