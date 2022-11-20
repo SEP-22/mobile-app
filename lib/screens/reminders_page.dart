@@ -483,7 +483,7 @@ class MySecondScreen extends StatelessWidget {
                     )
                   : payload.contains('lunch')
                       ? Image.asset(
-                          "assets/lunch.png",
+                          "assets/lunch.jpg",
                         )
                       : Image.asset(
                           "assets/dinner.png",
