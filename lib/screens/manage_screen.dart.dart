@@ -227,7 +227,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
         dietId = data["activeDietPlan"]["_id"];
         _selectedGender =
             capitalize(data["activeDietPlan"]["gender"].toString());
-        // _selectedDate  = DateFormat.yMd().parse(data["activeDietPlan"]["dob"]);
+        _selectedDate  = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(data["activeDietPlan"]["dob"]);
         heightController.text = data["activeDietPlan"]["height"].toString();
         weightController.text = data["activeDietPlan"]["weight"].toString();
         nameController.text = data["activeDietPlan"]["name"].toString();
@@ -276,7 +276,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
         elevation: 0.0,
         centerTitle: false,
         title: const Text(
-          "Create Your Diet Plan",
+          "Edit Your Diet Plan",
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
