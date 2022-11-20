@@ -51,7 +51,7 @@ class LandingScreen extends StatelessWidget {
                     // ignore: sort_child_properties_last
                     children: [
                       const Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae vehicula dui. Etiam consectetur porta tellus, vel porta leo scelerisque semper. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean in dapibus metus, in ultrices libero. Nulla vel placerat lectus, a commodo elit.",
+                        "Are you falling behind of your fitness goals? \nWorry no more because we've got you covered. Your very own personalised diet plan is few clicks away. Complete this quiz to get a balanced diet with your own food preferences that comes with all the essential nutrients. To help you in groceries, each diet plan comes with a shopping list!!. Hurry up and create your diet plan NOW!!",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
