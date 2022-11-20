@@ -13,7 +13,10 @@ import '../providers/user_provider.dart';
 import '../const.dart';
 
 class SelectFoodArguments1 {
-  SelectFoodArguments1({required this.addFood,  required this.removeFood,required this.selectedFood});
+  SelectFoodArguments1(
+      {required this.addFood,
+      required this.removeFood,
+      required this.selectedFood});
 
   final Function addFood;
   final Function removeFood;
@@ -185,7 +188,9 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
     var data = json.decode(response.body);
     print(data);
 
-    submitPreferedFood(userid);
+    if (seletedFood.length > 0) {
+      submitPreferedFood(userid);
+    }
 
     generateDietPlan(data["_id"]);
 
@@ -726,7 +731,9 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
                           Navigator.of(context).pushNamed(
                               EditFoodScreen.routeName,
                               arguments: SelectFoodArguments1(
-                                  addFood: addFood,removeFood: removeFood, selectedFood: seletedFood));
+                                  addFood: addFood,
+                                  removeFood: removeFood,
+                                  selectedFood: seletedFood));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

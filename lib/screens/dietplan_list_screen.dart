@@ -24,6 +24,7 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
   bool? currentUser = false;
 
   void getData(String userId) async {
+    print(userId);
     var response = await getAllPlanNamesAndStateByUserId(userId);
     if (response is String) {
       setState(() {
@@ -39,7 +40,7 @@ class _DietPlanListScreenState extends State<DietPlanListScreen> {
     setState(() {
       loading = false;
     });
-    print(dietIdList);
+    print(data);
   }
 
   @override
