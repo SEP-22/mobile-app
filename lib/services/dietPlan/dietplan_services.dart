@@ -6,9 +6,6 @@ import '../../const.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 
 Future<Object> getDietPlanById(String id) async {
-  //String path = "http://192.168.1.9:4000/dietPlan/getWeeklyDietPlanById/";
-  // var response = await api_service.fetchGet(
-  //     "http://192.168.1.9:4000/dietPlan/getWeeklyDietPlan/active/6360cf9f0ebc552ba5863f87");
   var response =
       await api_service.fetchGet('${uri}dietPlan/getWeeklyDietPlanById/$id');
   if (response.statusCode == 200) {

@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/services/editProfile/edit_profile_services.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class EditEmail extends StatefulWidget {
   //const EditEmail({super.key});
@@ -19,11 +21,11 @@ class _EditEmailState extends State<EditEmail> {
 
   String errorMessage = "";
   bool isError = false;
-  String _id = "6360cf9f0ebc552ba5863f87";
+  //String _id = "6360cf9f0ebc552ba5863f87";
 
-  Future<bool> sendData() async {
+  Future<bool> sendData(String userId) async {
     Map data = {};
-    data['userId'] = _id;
+    data['userId'] = userId;
     data['email'] = emailController.text.toString();
     var response = await editEmail(data);
     return response;
@@ -31,6 +33,7 @@ class _EditEmailState extends State<EditEmail> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Email"),
@@ -94,7 +97,7 @@ class _EditEmailState extends State<EditEmail> {
                           errorMessage = "Please enter a valid email address!";
                         });
                       } else {
-                        bool state = await sendData();
+                        bool state = await sendData(user.id);
                         if (state) {
                           Navigator.of(context).pop();
                           await Navigator.of(context).push(

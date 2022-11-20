@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/services/editProfile/edit_profile_services.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class EditPhone extends StatefulWidget {
   //const EditPhone({super.key});
@@ -17,17 +19,23 @@ class _EditPhoneState extends State<EditPhone> {
   RegExp regExPhone = RegExp(r'^(?:[+0]9)?[0-9]{10}$');
   String errorMessage = "";
   bool isError = false;
-  String _id = "6360cf9f0ebc552ba5863f87";
+  //String _id = "6360cf9f0ebc552ba5863f87";
 
-  void sendData() async {
+  void sendData(String userId) async {
     Map data = {};
-    data['userId'] = _id;
+    data['userId'] = userId;
     data['phone'] = phoneController.text.toString();
     var response = await editPhone(data);
+    if (response) {
+      Navigator.of(context).pop();
+      await Navigator.of(context)
+          .push(new MaterialPageRoute(builder: (context) => ProfilePage()));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Phone Number"),
@@ -91,10 +99,10 @@ class _EditPhoneState extends State<EditPhone> {
                           errorMessage = "Please enter a valid phone number!";
                         });
                       } else {
-                        sendData();
-                        Navigator.of(context).pop();
-                        await Navigator.of(context).push(new MaterialPageRoute(
-                            builder: (context) => ProfilePage()));
+                        sendData(user.id);
+                        // Navigator.of(context).pop();
+                        // await Navigator.of(context).push(new MaterialPageRoute(
+                        //     builder: (context) => ProfilePage()));
                       }
                     },
                     child: Text("Submit"),

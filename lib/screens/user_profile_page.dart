@@ -4,6 +4,8 @@ import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import 'dart:convert';
 import '../const.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -14,18 +16,14 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   List<String> profileDetails = ["", "", "", "", ""];
-  String id = "6360cf9f0ebc552ba5863f87";
+  bool? currentUser = false;
+  //String id = "6360cf9f0ebc552ba5863f87";
 
-  @override
-  void initState() {
-    getProfileDetails();
-    super.initState();
-  }
-
-  Future<void> getProfileDetails() async {
+  Future<void> getProfileDetails(String userId) async {
     List<String> temp_profile_details = [];
 
-    var response = await api_service.fetchGet("${uri}user/profileDetails/$id");
+    var response =
+        await api_service.fetchGet("${uri}user/profileDetails/$userId");
     print("Im here");
     var data = json.decode(response.body);
     temp_profile_details.add(data["_id"]);
@@ -40,6 +38,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getProfileDetails(user.id);
+      setState(() {
+        currentUser == true;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

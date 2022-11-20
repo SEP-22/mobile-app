@@ -6,6 +6,8 @@ import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:flutter_application_1/widgets/food_item.dart';
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import '../const.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen({super.key});
@@ -15,26 +17,20 @@ class ShoppingListScreen extends StatefulWidget {
 }
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
-  String _id = "6360cf9f0ebc552ba5863f87";
+  //String _id = "6360cf9f0ebc552ba5863f87";
   List completeShoppingList = [];
   List<String> shoppingListNames = [];
   String? valueChosen;
   List currentShoppingList = [];
   var slMap = new Map();
 
-  @override
-  void initState() {
-    getShoppingList();
-    super.initState();
-  }
+  bool? currentUser = false;
 
-  Future<void> getShoppingList() async {
+  Future<void> getShoppingList(String userId) async {
     List<String> temp_shoppingListNames = [];
     var temp_map = new Map();
-    //food template data
-
     var response = await api_service
-        .fetchGet("${uri}shoppingList/getShoppingListsFromUserId/$_id");
+        .fetchGet("${uri}shoppingList/getShoppingListsFromUserId/$userId");
     print("shoppingList taken");
     var data = json.decode(response.body);
     for (var shoppingList in data) {
@@ -94,9 +90,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 height: 5,
               ),
               Text(
-                food.amount.length > 10
-                    ? '${food.amount.substring(0, 10)} grams'
-                    : '${food.amount} grams',
+                double.parse(food.amount).round() > 1000
+                    ? '${double.parse(food.amount).round() / 1000} kg'
+                    : '${double.parse(food.amount).round()} g',
                 style: TextStyle(color: Colors.black, fontSize: 17),
               ),
             ],
@@ -104,53 +100,17 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         ]),
       ),
     );
-    // Card(
-    //   margin: EdgeInsets.all(20),
-    //   child: Row(children: [
-    //     Center(
-    //       child: Stack(
-    //         children: [
-    //           Container(
-    //             width: 70,
-    //             height: 70,
-    //             decoration: BoxDecoration(
-    //               shape: BoxShape.rectangle,
-    //               image: DecorationImage(
-    //                 fit: BoxFit.cover,
-    //                 image: NetworkImage(food.image),
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //     Column(
-    //       children: [
-    //         Text(
-    //           food.name,
-    //           style: TextStyle(
-    //             fontSize: 20,
-    //             color: Colors.green,
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           height: 10,
-    //         ),
-    //         Text(
-    //           food.amount,
-    //           style: TextStyle(
-    //             fontSize: 18,
-    //             color: Colors.black,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ]),
-    // );
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getShoppingList(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
