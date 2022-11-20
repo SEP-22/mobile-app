@@ -471,26 +471,28 @@ class MySecondScreen extends StatelessWidget {
         backgroundColor: Colors.green[500],
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 100),
-              child: payload.contains('breakfast')
-                  ? Image.asset(
-                      "assets/breakfast.png",
-                    )
-                  : payload.contains('lunch')
-                      ? Image.asset(
-                          "assets/lunch.jpg",
-                        )
-                      : Image.asset(
-                          "assets/dinner.png",
-                        ),
-            ),
-            Text(payload)
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 100),
+                child: payload.contains('breakfast')
+                    ? Image.asset(
+                        "assets/breakfast.png",
+                      )
+                    : payload.contains('lunch')
+                        ? Image.asset(
+                            "assets/lunch.jpg",
+                          )
+                        : Image.asset(
+                            "assets/dinner.png",
+                          ),
+              ),
+              Text(payload)
+            ],
+          ),
         ),
       ),
     );
