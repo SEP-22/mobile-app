@@ -193,8 +193,12 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
 
       var data = json.decode(response.body);
       print(data);
+      print(seletedFood);
 
-      submitPreferedFood(id);
+      print(seletedFood.length > 0);
+      if (seletedFood.length > 0) {
+        submitPreferedFood(id);
+      }
 
       generateDietPlan(data["_id"]);
 
@@ -219,7 +223,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
       var data = json.decode(response.body);
       print(data);
 
-      submitPreferedFood(id);
+      if (seletedFood.length > 0) {
+        submitPreferedFood(id);
+      }
 
       generateDietPlan(data["_id"]);
     }
