@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/const.dart';
 import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/screens/food_list_screen.dart';
 import 'package:flutter_application_1/screens/manage_screen.dart.dart';
@@ -6,9 +8,17 @@ import 'package:flutter_application_1/screens/landing_screen.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
 import 'package:flutter_application_1/screens/reminders_page.dart';
 import 'package:flutter_application_1/screens/shopping_list_screen.dart';
+import 'package:flutter_application_1/services/api_service.dart' as api_service;
+
+import 'package:flutter_application_1/screens/signup_screen.dart';
 import 'package:flutter_application_1/screens/stats_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../providers/user_provider.dart';
 
 class NavDrawer extends StatelessWidget {
+
   const NavDrawer({super.key});
   final String name = 'Piumini Kaveesha';
   final String email = 'piumini95kaveesha@gmail.com';
@@ -20,6 +30,7 @@ class NavDrawer extends StatelessWidget {
     'Shopping List',
     'Explore',
     'Food List',
+    "Logout"
   ];
   static const List<Icon> icons = [
     Icon(
@@ -62,23 +73,30 @@ class NavDrawer extends StatelessWidget {
       color: Colors.black87,
       size: 30.0,
     ),
+    Icon(
+      Icons.logout,
+      color: Colors.black87,
+      size: 30.0,
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+
     return Drawer(
       child: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              buildHeader(context),
-              buildMenuItems(context),
+              buildHeader(context, user),
+              buildMenuItems(context,user),
             ]),
       ),
     );
   }
 
-  Widget buildHeader(BuildContext context) => Material(
+  Widget buildHeader(BuildContext context,User user) => Material(
         color: Colors.green[500],
         child: InkWell(
           onTap: () {
@@ -102,14 +120,14 @@ class NavDrawer extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    name,
+                    user.name,
                     style: const TextStyle(
                       fontSize: 28,
                       color: Colors.white,
                     ),
                   ),
                   Text(
-                    email,
+                    user.email,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -122,7 +140,8 @@ class NavDrawer extends StatelessWidget {
         ),
       );
 
-  Widget buildMenuItems(BuildContext context) => Container(
+  Widget buildMenuItems(BuildContext context,User user) => Container(
+
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Wrap(
         runSpacing: 10,
@@ -223,6 +242,22 @@ class NavDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => FoodListScreen()));
+            },
+          ),
+          ListTile(
+            title: Text(
+              items[7],
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            leading: icons[7],
+            onTap: () async {
+              await api_service
+        .fetchPost("${uri}user/signOut", {"user": user});
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => AuthScreen()));
             },
           ),
         ],

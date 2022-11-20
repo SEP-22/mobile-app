@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
               : const AuthScreen()
           : AuthScreen(),
       routes: {
+        AuthScreen.routeName: (context) => AuthScreen(),
         CreateDietPlanScreen.routeName: (context) => CreateDietPlanScreen(),
         LandingScreen.routeName: (context) => LandingScreen(),
         FoodScreen.routeName: (context) => FoodScreen(),
