@@ -121,6 +121,7 @@ class NavDrawer extends StatelessWidget {
                   ),
                   Text(
                     user.name,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 28,
                       color: Colors.white,

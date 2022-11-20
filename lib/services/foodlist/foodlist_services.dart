@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'Food.dart';
 import '../../const.dart';
 
-Future<Object> getFoodbyCategory() async {
+Future<Object> getFoodbyCategory(String id) async {
   var response1 =
       await api_service.fetchGet("${uri}food/allfoods");
 
   var response2 = await api_service
       .fetchPost("${uri}user/getpreferedfoods", {
-    "user_Id": "6360cf9f0ebc552ba5863f87",
+    "user_Id": id,
   });
 
   if (response1.statusCode == 200 && response2.statusCode == 200) {
@@ -87,13 +87,13 @@ Future<Object> getFoodbyCategory() async {
   }
 }
 
-Future<Object> getAllFoods() async {
+Future<Object> getAllFoods(String id) async {
   var response1 =
       await api_service.fetchGet("${uri}food/allfoods");
 
   var response2 = await api_service
       .fetchPost("${uri}user/getpreferedfoods", {
-    "user_Id": "6360cf9f0ebc552ba5863f87",
+    "user_Id": id,
   });
 
   if (response1.statusCode == 200 && response2.statusCode == 200) {

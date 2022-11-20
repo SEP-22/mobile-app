@@ -3,6 +3,8 @@ import 'package:flutter_application_1/widgets/foodlist/food_list_button.dart';
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 import '../services/foodlist/foodlist_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class FoodListScreen extends StatefulWidget {
   const FoodListScreen({super.key});
@@ -12,6 +14,7 @@ class FoodListScreen extends StatefulWidget {
 }
 
 class _FoodListScreenState extends State<FoodListScreen> {
+  bool currentUser = false;
   static const items = [
     "All Foods",
     "Vegetables",
@@ -25,8 +28,8 @@ class _FoodListScreenState extends State<FoodListScreen> {
   Map data = {};
   bool loading = true;
 
-  void getData() async {
-    var response = await getFoodbyCategory();
+  void getData(String id) async {
+    var response = await getFoodbyCategory(id);
     if (response is String) {
       setState(() {
         message = response;
@@ -45,13 +48,14 @@ class _FoodListScreenState extends State<FoodListScreen> {
   }
 
   @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getData(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Foods in EatSmart"),

@@ -5,9 +5,10 @@ import 'dart:convert';
 import '../../const.dart';
 import 'Reminder.dart';
 
-Future<Object> getReminder() async {
+
+Future<Object> getReminder(String id) async {
   var response = await api_service.fetchPost("${uri}reminder/getreminder", {
-    "user_Id": "6374ace858f6e3309980503a",
+    "user_Id": id,
   });
 
   if (response.statusCode == 200) {

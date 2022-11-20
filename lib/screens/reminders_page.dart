@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/navigation_drawer.dart';
+import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import '../services/reminders/notification_service.dart';
 import '../services/reminders/Reminder.dart';
 import '../services/reminders/reminder_service.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../providers/user_provider.dart';
+
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({super.key});
@@ -15,6 +19,7 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
+  bool currentUser = false;
   String message = "";
   String id = "";
   bool loading = true;
@@ -25,9 +30,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
   bool dinner = false;
   TimeOfDay dinnerTime = const TimeOfDay(hour: 00, minute: 00);
 
-  void getData() async {
+  void getData(String id) async {
     print("hello");
-    var response = await getReminder();
+    var response = await getReminder(id);
     if (response is String) {
       setState(() {
         message = response;
@@ -57,7 +62,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
     notificationService = NotificationService();
     listenToNotificationStream();
     notificationService.initializePlatformNotifications();
-    getData();
     super.initState();
   }
 
@@ -260,6 +264,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getData(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     final bhours = breakfastTime.hour.toString().padLeft(2, '0');
     final bminutes = breakfastTime.minute.toString().padLeft(2, '0');
     final lhours = lunchTime.hour.toString().padLeft(2, '0');

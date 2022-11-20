@@ -2,10 +2,10 @@ import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'dart:convert';
 import '../../const.dart';
 
-Future<Object> getMostOccuringFoods() async {
+Future<Object> getMostOccuringFoods(String id) async {
   var response = await api_service
       .fetchPost("${uri}stats/maxcountfoodsinDP", {
-    "user_Id": "6360cf9f0ebc552ba5863f87",
+    "user_Id": id,
   });
 
   if (response.statusCode == 200) {
@@ -40,10 +40,10 @@ Future<Object> getMostOccuringFoods() async {
   }
 }
 
-Future<Object> getFoodCategoryPercentage() async {
+Future<Object> getFoodCategoryPercentage(String id) async {
   var response = await api_service
       .fetchPost("${uri}stats/calorypercentagebycateory", {
-    "user_Id": "6360cf9f0ebc552ba5863f87",
+    "user_Id": id,
   });
 
   if (response.statusCode == 200) {
@@ -61,11 +61,11 @@ Future<Object> getFoodCategoryPercentage() async {
   }
 }
 
-Future<Object> haveActiveDietPlan() async {
+Future<Object> haveActiveDietPlan(String id) async {
   
   var response = await api_service
       .fetchPost("${uri}user/activeplan", {
-    "user_Id": "6360cf9f0ebc552ba5863f87",
+    "user_Id": id,
   });
 
   if (response.statusCode == 200) {

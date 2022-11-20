@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:d_chart/d_chart.dart';
 import '../../services/stats/stats_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../../providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class FoodCategoryChart extends StatefulWidget {
   FoodCategoryChart({super.key});
@@ -11,11 +13,12 @@ class FoodCategoryChart extends StatefulWidget {
 }
 
 class _FoodCategoryChartState extends State<FoodCategoryChart> {
+  bool currentUser = false;
   List data = [];
   String message = "";
 
-  void getData() async {
-    var response = await getFoodCategoryPercentage();
+  void getData(String id) async {
+    var response = await getFoodCategoryPercentage(id);
     if (response is String) {
       setState(() {
         message = response;
@@ -30,13 +33,14 @@ class _FoodCategoryChartState extends State<FoodCategoryChart> {
   }
 
   @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getData(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(

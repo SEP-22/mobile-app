@@ -5,6 +5,8 @@ import 'package:flutter_application_1/widgets/stats/meals_chart.dart';
 import 'package:flutter_application_1/widgets/stats/most_prefered_foods.dart';
 import '../services/stats/stats_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -14,12 +16,13 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
+  bool currentUser = false;
   bool loading = true;
   bool active = false;
   String message = "";
 
-  void getData() async {
-    var response = await haveActiveDietPlan();
+  void getData(String id) async {
+    var response = await haveActiveDietPlan(id);
     if (response is String) {
       setState(() {
         message = response;
@@ -44,13 +47,14 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+    if (currentUser == false) {
+      getData(user.id);
+      setState(() {
+        currentUser = true;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("More about your Diet Plan"),
