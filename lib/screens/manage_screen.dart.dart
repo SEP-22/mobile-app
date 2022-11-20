@@ -79,7 +79,7 @@ class _EditDietPlanScreenState extends State<EditDietPlanScreen> {
   }
 
   Future<void> generateDietPlan(String id) async {
-    print("rrr");
+    print("manage");
     var response = await api_service
         .fetchPost("${uri}dietPlan/generatedietplan", {"dietPlan_Id": id});
     var data1 = json.decode(response.body);

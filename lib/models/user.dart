@@ -26,7 +26,7 @@ class User {
       'name': name,
       'email': email,
       'password': password,
-      'address': phone,
+      'phone': phone,
       'role': "user",
       'token': token,
    
@@ -39,7 +39,7 @@ class User {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       password: map['password'] ?? '',
-      phone: map['address'] ?? '',
+      phone: map['phone'] ?? '',
       role: map['role'] ?? '',
       token: map['token'] ?? '',
       

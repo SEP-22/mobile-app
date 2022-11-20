@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/utils.dart';
 import 'package:flutter_application_1/screens/diet_plan_select_screen.dart';
 import 'package:flutter_application_1/screens/selectFoodScreen.dart';
 import 'package:intl/intl.dart';
@@ -11,8 +12,10 @@ import '../providers/user_provider.dart';
 import '../const.dart';
 
 class SelectFoodArguments {
-  SelectFoodArguments({required this.addFood,
-      required this.removeFood, required this.selectedFood});
+  SelectFoodArguments(
+      {required this.addFood,
+      required this.removeFood,
+      required this.selectedFood});
 
   final Function addFood;
   final Function removeFood;
@@ -37,7 +40,6 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final nameController = TextEditingController();
-
 
   List<String> seletedFood = [];
 
@@ -162,27 +164,65 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
   }
 
   Future<void> submitData(String id) async {
-    var response = await api_service.fetchPost("${uri}dietPlan/quiz", {
+    var active = false;
+    var response2 = await api_service.fetchPost("${uri}user/activeplan", {
       "user_Id": id,
-      "name": nameController.text,
-      "dob": _selectedDate!.toIso8601String(),
-      "gender": _selectedGender!.toLowerCase(),
-      "activity":
-          _selectedDailyActivityLevel!.toLowerCase().replaceAll(" ", ""),
-      "intention": _selectedDietIntention!.toLowerCase().split(" ")[0],
-      "height": heightController.text,
-      "weight": weightController.text,
-      "diabetics": diabitics,
-      "cholesterol": cholestrol,
-      "bloodpressure": bloodPressure,
     });
 
-    var data = json.decode(response.body);
-    print(data);
+    if (response2.statusCode == 200) {
+      active = json.decode(response2.body)['active'];
+    }
 
-    submitPreferedFood(id);
+    if (!active && seletedFood.isEmpty) {
+      showSnackBar(context, "You should select foods.");
+    } else if (!active) {
+      var response = await api_service.fetchPost("${uri}dietPlan/quiz", {
+        "user_Id": id,
+        "name": nameController.text,
+        "dob": _selectedDate!.toIso8601String(),
+        "gender": _selectedGender!.toLowerCase(),
+        "activity":
+            _selectedDailyActivityLevel!.toLowerCase().replaceAll(" ", ""),
+        "intention": _selectedDietIntention!.toLowerCase().split(" ")[0],
+        "height": heightController.text,
+        "weight": weightController.text,
+        "diabetics": diabitics,
+        "cholesterol": cholestrol,
+        "bloodpressure": bloodPressure,
+      });
 
-    generateDietPlan(data["_id"]);
+      var data = json.decode(response.body);
+      print(data);
+
+      submitPreferedFood(id);
+
+      generateDietPlan(data["_id"]);
+
+      var response3 = await api_service.fetchPost("${uri}user/updateactiveplan",
+          {'user_Id': id, "activePlan_Id": data["_id"]});
+    } else {
+      var response = await api_service.fetchPost("${uri}dietPlan/quiz", {
+        "user_Id": id,
+        "name": nameController.text,
+        "dob": _selectedDate!.toIso8601String(),
+        "gender": _selectedGender!.toLowerCase(),
+        "activity":
+            _selectedDailyActivityLevel!.toLowerCase().replaceAll(" ", ""),
+        "intention": _selectedDietIntention!.toLowerCase().split(" ")[0],
+        "height": heightController.text,
+        "weight": weightController.text,
+        "diabetics": diabitics,
+        "cholesterol": cholestrol,
+        "bloodpressure": bloodPressure,
+      });
+
+      var data = json.decode(response.body);
+      print(data);
+
+      submitPreferedFood(id);
+
+      generateDietPlan(data["_id"]);
+    }
 
     // print(data);
   }
@@ -668,7 +708,9 @@ class _CreateDietPlanScreenState extends State<CreateDietPlanScreen> {
                         onPressed: () {
                           Navigator.of(context).pushNamed(FoodScreen.routeName,
                               arguments: SelectFoodArguments(
-                                  addFood: addFood,removeFood: removeFood, selectedFood: seletedFood));
+                                  addFood: addFood,
+                                  removeFood: removeFood,
+                                  selectedFood: seletedFood));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

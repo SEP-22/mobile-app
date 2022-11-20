@@ -8,6 +8,7 @@ import 'package:flutter_application_1/constants/global_variables.dart';
 import 'package:flutter_application_1/constants/utils.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/providers/user_provider.dart';
+import 'package:flutter_application_1/services/api_service.dart' as api_service;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class AuthService {
     required String email,
     required String password,
     required String name,
+    required String phone,
   }) async {
     try {
       print("In sign up method.");
@@ -28,31 +30,55 @@ class AuthService {
         name: name,
         password: password,
         email: email,
-        phone: '',
+        phone: phone,
         role: 'user',
         token: '',
       );
 
-      http.Response res = await http.post(
-        Uri.parse('${uri}user/signUp'),
-        body: user.toJson(),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
+      // http.Response res1 =
+      //     await http.post(Uri.parse('${uri}user/singleEmail/${email}'));
 
-      httpErrorHandle(
-        response: res,
-        context: context,
-        onSuccess: () {
+      // print(jsonDecode(res1.body));
+
+      var response =
+          await api_service.fetchGet("${uri}user/singleEmail/${email}");
+
+      if (jsonDecode(response.body).isNotEmpty) {
+        showSnackBar(
+          context,
+          'Email is already registerd!',
+        );
+      } else {
+        http.Response res = await http.post(
+          Uri.parse('${uri}user/signUp'),
+          body: user.toJson(),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        );
+
+        if (jsonDecode(res.body).isNotEmpty) {
           showSnackBar(
             context,
             'Account created! Login with the same credentials!',
           );
-        },
-      );
+        }
+      }
+
+      // httpErrorHandle(
+      //   response: res,
+      //   context: context,
+      //   onSuccess: () {
+      //     print("succ");
+      //     showSnackBar(
+      //       context,
+      //       'Account created! Login with the same credentials!',
+      //     );
+      //   },
+      // );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      print(e);
+      // showSnackBar(context, e.toString());
     }
   }
 

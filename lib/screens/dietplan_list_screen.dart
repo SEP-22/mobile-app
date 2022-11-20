@@ -8,6 +8,7 @@ import 'package:flutter_application_1/widgets/navigation_drawer.dart';
 
 class DietPlanListScreen extends StatefulWidget {
   const DietPlanListScreen({super.key});
+  static const routeName = "/dietplanlist";
 
   @override
   State<DietPlanListScreen> createState() => _DietPlanListScreenState();

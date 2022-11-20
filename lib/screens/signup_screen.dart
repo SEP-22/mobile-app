@@ -3,6 +3,7 @@ import 'package:flutter_application_1/common/widgets/custom_textfield.dart';
 import 'package:flutter_application_1/constants/global_variables.dart';
 // import 'package:flutter_application_1/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/constants/utils.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 
 enum Auth {
@@ -26,6 +27,8 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _repasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -36,12 +39,19 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signUpUser() {
-    authService.signUpUser(
-      context: context,
-      email: _emailController.text,
-      password: _passwordController.text,
-      name: _nameController.text,
-    );
+    if (_passwordController.text != _repasswordController.text) {
+      showSnackBar(context, "Passwords do not match!.");
+    } else if (_passwordController.text.length < 8) {
+      showSnackBar(context, "Password length should be more than 8!.");
+    } else {
+      authService.signUpUser(
+        context: context,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text,
+        name: _nameController.text,
+      );
+    }
   }
 
   void signInUser() {
@@ -55,7 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.green[50],
+      backgroundColor: Colors.green[50],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -69,7 +79,6 @@ class _AuthScreenState extends State<AuthScreen> {
                     fontSize: 35,
                     fontWeight: FontWeight.w900,
                     color: Colors.green,
-                    
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -119,19 +128,46 @@ class _AuthScreenState extends State<AuthScreen> {
                       key: _signUpFormKey,
                       child: Column(
                         children: [
-                          CustomTextField(
+                          TextField(
                             controller: _nameController,
-                            hintText: 'Name',
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Name',
+                            ),
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          TextField(
                             controller: _emailController,
-                            hintText: 'Email',
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email',
+                            ),
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          TextField(
+                            controller: _phoneController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Phone Number',
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
                             controller: _passwordController,
-                            hintText: 'Password',
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Password',
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            controller: _repasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Confirm Password',
+                            ),
                           ),
                           const SizedBox(height: 10),
                           CustomButton(
@@ -180,9 +216,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             hintText: 'Email',
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          TextField(
                             controller: _passwordController,
-                            hintText: 'Password',
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Password',
+                            ),
                           ),
                           const SizedBox(height: 10),
                           CustomButton(

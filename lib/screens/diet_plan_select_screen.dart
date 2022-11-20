@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/const.dart';
+import 'package:flutter_application_1/screens/dietplan_list_screen.dart';
 import 'package:flutter_application_1/services/dietPlan/dietplan_services.dart';
 import 'package:flutter_application_1/widgets/complete_food_item.dart';
 import 'package:flutter_application_1/widgets/diet_plan_item.dart';
@@ -63,8 +64,16 @@ class _DietPlanSelectorScreenState extends State<DietPlanSelectorScreen> {
 
     var response = await api_service
         .fetchPost("${uri}dietPlan/savedietplan", {"plans": output});
-    var data = json.decode(response.body);
-    print(data);
+
+    var response1 = await api_service
+        .fetchPost("${uri}shoppingList/createAndSaveShoppingList", {"plans": output});
+    // var data = json.decode(response.body);
+    // print(data);
+    print("done");
+
+    Navigator.of(context)
+        .popAndPushNamed(DietPlanListScreen.routeName);
+    
   }
 
   @override

@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
         EditPhone.routeName: (context) => EditPhone(),
         EditEmail.routeName: (context) => EditEmail(),
         EditPassword.routeName: (context) => EditPassword(),
+        DietPlanListScreen.routeName: (context) => DietPlanListScreen(),
       },
     );
   }
